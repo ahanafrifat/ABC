@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,12 +21,18 @@ import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.barCodeScanner.BarCodeScanner;
 import com.appinionbd.abc.imageLibrary.GlideApp;
+import com.appinionbd.abc.interfaces.trackInterface.ITrackPatient;
+import com.appinionbd.abc.model.dataHolder.UserInfo;
+import com.appinionbd.abc.networking.trackPatient.ApiTrackPatient;
 import com.appinionbd.abc.view.capturePicture.BarcodeCaptureActivity;
+import com.appinionbd.abc.view.home.HomeActivity;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import io.realm.Realm;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -36,6 +44,8 @@ public class PatientCodeActivity extends AppCompatActivity {
     ImageView imageViewBarcode;
     CardView cardViewBarcodeScanner;
 
+    Button buttonSave;
+
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
@@ -45,6 +55,7 @@ public class PatientCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_code);
+        Realm.init(this);
     }
 
     @Override
@@ -55,6 +66,67 @@ public class PatientCodeActivity extends AppCompatActivity {
         imageViewBarcode = findViewById(R.id.imageView_barcode);
         cardViewBarcodeScanner = findViewById(R.id.cardView_barcode_scanner);
         cardViewBarcodeScanner.setOnClickListener(v -> showDialogBox());
+
+        buttonSave = findViewById(R.id.button_save);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                trackPatient();
+            }
+        });
+
+    }
+
+    private void trackPatient() {
+        Toast.makeText(this , "Loading ...." , Toast.LENGTH_LONG).show();
+        String token;
+        try(Realm realm =Realm.getDefaultInstance()){
+            UserInfo userInfo = realm.where(UserInfo.class).findFirst();
+            token = userInfo.getToken();
+        }
+        if(!textInputEditTextPatientCode.getText().toString().isEmpty())
+            ApiTrackPatient.getApiTrackPatient().setApiTrackPatient(textInputEditTextPatientCode.getText().toString(), token, new ITrackPatient() {
+                @Override
+                public void successful() {
+                    gotoHomeMonitorActivity();
+                }
+
+                @Override
+                public void error() {
+                    errorShow();
+                }
+
+                @Override
+                public void networkFailed() {
+                    badNetwork();
+                }
+            });
+        else
+            Toast.makeText(this,"Please type or scan an ID !" ,Toast.LENGTH_LONG).show();
+    }
+
+    private void badNetwork() {
+        Toast.makeText(this , "Network error !" , Toast.LENGTH_LONG).show();
+    }
+
+    private void errorShow() {
+        Toast.makeText(this , "There is an error !" , Toast.LENGTH_LONG).show();
+    }
+
+
+    private void gotoHomeMonitorActivity() {
+        Toast.makeText(this , "Tracking Started !" , Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this , HomeActivity.class);
+        intent.putExtra("patientOrMonitor" , "monitor");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent intent = new Intent(this , HomeActivity.class);
+        intent.putExtra("patientOrMonitor" , "monitor");
+        startActivity(intent);
     }
 
     private void showDialogBox() {

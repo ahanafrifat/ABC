@@ -7,15 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".view.signIn.SignInActivity"
     android:paddingStart="20dp"
-    android:paddingEnd="20dp">
+    android:paddingEnd="20dp"
+    android:paddingTop="12dp">
 
     <ImageView
         android:id="@+id/imageView_icon"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_accessibility_black_24dp" />
+        android:src="@drawable/ic_patient" />
 
     <TextView
         android:id="@+id/textView_welcome_back"

@@ -13,17 +13,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.interfaces.presenterInterface.IMonitorHome;
 import com.appinionbd.abc.interfaces.recyclerAdapterMonitorHomeInterface.IPatientSelection;
+import com.appinionbd.abc.interfaces.trackListInterface.ITrackList;
+import com.appinionbd.abc.model.dataHolder.UserInfo;
+import com.appinionbd.abc.model.dataModel.Monitor;
 import com.appinionbd.abc.model.dataModel.MonitorsPatientList;
+import com.appinionbd.abc.networking.retrofit.ApiClient;
+import com.appinionbd.abc.networking.trackList.ApiTrackList;
 import com.appinionbd.abc.presenter.MonitorPresenter;
 import com.appinionbd.abc.view.PatientInfo.PatientInfoActivity;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterMonitor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,147 +65,176 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
 
     private void startMonitor() {
 
-        monitorsPatientLists = new ArrayList<>();
-        monitorsPatientLists.add(new MonitorsPatientList("0"
-        , "tahmid"
-        , "tahmid@abc.com"
-        ,"1970-01-01"
-        , "66"
-        ,"80.000"
-        , "0"
-        , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("1"
-                , "Ahanaf"
-                , "ahanaf@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("2"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-        monitorsPatientLists.add(new MonitorsPatientList("3"
-                , "Ahanaf"
-                , "ahanaf@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("4"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("5"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("6"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-        monitorsPatientLists.add(new MonitorsPatientList("7"
-                , "tahmid"
-                , "tahmid@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("8"
-                , "Ahanaf"
-                , "ahanaf@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("9"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-        monitorsPatientLists.add(new MonitorsPatientList("10"
-                , "Ahanaf"
-                , "ahanaf@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("11"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("12"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
-
-        monitorsPatientLists.add(new MonitorsPatientList("13"
-                , "Tanvir"
-                , "tanvir@abc.com"
-                ,"1970-01-01"
-                , "66"
-                ,"80.000"
-                , "0"
-                , "tah-1005"));
+//        monitorsPatientLists = new ArrayList<>();
+//        monitorsPatientLists.add(new MonitorsPatientList("0"
+//        , "tahmid"
+//        , "tahmid@abc.com"
+//        ,"1970-01-01"
+//        , "66"
+//        ,"80.000"
+//        , "0"
+//        , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("1"
+//                , "Ahanaf"
+//                , "ahanaf@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("2"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//        monitorsPatientLists.add(new MonitorsPatientList("3"
+//                , "Ahanaf"
+//                , "ahanaf@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("4"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("5"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("6"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//        monitorsPatientLists.add(new MonitorsPatientList("7"
+//                , "tahmid"
+//                , "tahmid@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("8"
+//                , "Ahanaf"
+//                , "ahanaf@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("9"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//        monitorsPatientLists.add(new MonitorsPatientList("10"
+//                , "Ahanaf"
+//                , "ahanaf@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("11"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("12"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
+//
+//        monitorsPatientLists.add(new MonitorsPatientList("13"
+//                , "Tanvir"
+//                , "tanvir@abc.com"
+//                ,"1970-01-01"
+//                , "66"
+//                ,"80.000"
+//                , "0"
+//                , "tah-1005"));
 
         recyclerViewMonitor = getActivity().findViewById(R.id.recyclerView_monitor);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getActivity());
         recyclerViewMonitor.setLayoutManager(layoutManager);
         recyclerViewMonitor.setHasFixedSize(true);
 
+        String token;
+        try(Realm realm = Realm.getDefaultInstance()){
+            UserInfo userInfo = realm.where(UserInfo.class).findFirst();
+            token = userInfo.getToken();
+        }
 
-        RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitorsPatientLists, new IPatientSelection() {
+        ApiTrackList.getApiTrackList().setApiTrackList(token, new ITrackList() {
             @Override
-            public void selectedPatient() {
-                patientSelected();
+            public void successful(Monitor monitor) {
+                showTrackList(monitor);
+            }
+
+            @Override
+            public void error() {
+
+            }
+
+            @Override
+            public void networkFailed() {
+
             }
         });
 
-        recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
-        recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
-        recyclerAdapterMonitor.notifyDataSetChanged();
+    }
 
+    private void showTrackList(Monitor monitor) {
+        if(monitor.getMonitorsPatientList().size() > 0) {
+
+            RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
+                @Override
+                public void selectedPatient() {
+                    patientSelected();
+                }
+            });
+
+            recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
+            recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
+            recyclerAdapterMonitor.notifyDataSetChanged();
+        }
+        else
+            Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
     }
 
     private void patientSelected() {

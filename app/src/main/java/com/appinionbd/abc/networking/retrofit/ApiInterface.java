@@ -1,7 +1,9 @@
 package com.appinionbd.abc.networking.retrofit;
 
+import com.appinionbd.abc.model.dataHolder.PatientTrackModel;
 import com.appinionbd.abc.model.dataModel.APIAuth;
 import com.appinionbd.abc.model.dataModel.LoginAuth;
+import com.appinionbd.abc.model.dataModel.Monitor;
 import com.appinionbd.abc.model.dataModel.PatientWithDate;
 import com.appinionbd.abc.model.dataModel.ResponseModel;
 import com.appinionbd.abc.model.dataModel.ResponseTask;
@@ -49,5 +51,13 @@ public interface ApiInterface {
     Call<ResponseTask> responseTaskCall(@Header("token") String token,
                                         @Body PatientWithDate patientWithDate);
 
+    @Headers({"Content-Type: application/json"})
+    @POST("/abcApp_api/api/task/add_monitors_patient")
+    Call<ResponseModel> patientTrackModelCall(@Header("token") String token,
+                                                  @Body PatientTrackModel patientTrackModel);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("/abcApp_api/api/task/add_monitors_patient_list")
+    Call<Monitor> trackListCall(@Header("token") String token);
 
 }

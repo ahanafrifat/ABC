@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.model.dataHolder.UserInfo;
@@ -22,6 +23,7 @@ import com.appinionbd.abc.view.home.fragment.HomeFragment;
 import com.appinionbd.abc.view.home.fragment.HomeMonitorFragment;
 import com.appinionbd.abc.view.home.fragment.MyInfoFragment;
 import com.appinionbd.abc.view.home.fragment.TrackMeFragment;
+import com.appinionbd.abc.view.patientCode.PatientCodeActivity;
 import com.appinionbd.abc.view.signIn.SignInActivity;
 
 import io.realm.Realm;
@@ -57,11 +59,21 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         Intent intent = getIntent();
         choose = intent.getStringExtra("patientOrMonitor");
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);;
+        if (choose.equals("patient")) {
+            navigationView.inflateMenu(R.menu.activity_home_drawer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.activity_home_monitor_drawer);
+        }
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         fragment = null;
         if (choose.equals("patient"))
             startFragment(HOME_FRAGMENT_FOR_PATIENT);
@@ -108,33 +120,21 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home_patient) {
-            if (choose.equals("patient")) {
-                item.setTitle("Home");
-                item.setVisible(true);
                 startFragment(HOME_FRAGMENT_FOR_PATIENT);
-            }
-            else if(choose.equals("monitor")){
-                startFragment(HOME_FRAGMENT_FOR_Monitor);
-            }
-            // Handle the camera action
         }
         else if (id == R.id.nav_track_me) {
-            if (choose.equals("patient")) {
-                item.setTitle("TRACK ME");
-                item.setVisible(true);
                 startFragment(TRACK_ME);
-            }
-            else if(choose.equals("monitor")){
-                startFragment(HOME_FRAGMENT_FOR_Monitor);
-            }
         }
         else if (id == R.id.nav_my_info) {
-            if (choose.equals("patient")) {
-                item.setTitle("Home");
-                item.setVisible(true);
-                startFragment(MY_INFO);
-            }
+            startFragment(MY_INFO);
         }
+        else if (id == R.id.nav_home_monitor) {
+            startFragment(MY_INFO);
+        }
+        else if (id == R.id.nav_track_patient) {
+            startPatientCodeActivity();
+        }
+
         else if (id == R.id.nav_change_password) {
 
         }
@@ -188,5 +188,10 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(this , SignInActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void startPatientCodeActivity() {
+        Intent intent = new Intent(this , PatientCodeActivity.class);
+        startActivity(intent);
     }
 }
