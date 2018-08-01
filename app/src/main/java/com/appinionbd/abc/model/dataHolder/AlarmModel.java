@@ -4,28 +4,25 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 
-public class AlarmModel {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class AlarmModel extends RealmObject {
+
+    @PrimaryKey
     private String alarmId;
 
     private String state;
 
-    private Intent intent;
-
-    private AlarmManager alarmManager;
-
-    private PendingIntent pendingIntent;
-
+    private String time;
 
     public AlarmModel() {
     }
 
-    public AlarmModel(String alarmId, AlarmManager alarmManager, Intent intent, PendingIntent pendingIntent, String state) {
+    public AlarmModel(String alarmId, String state, String time) {
         this.alarmId = alarmId;
-        this.alarmManager = alarmManager;
-        this.intent = intent;
-        this.pendingIntent = pendingIntent;
         this.state = state;
+        this.time = time;
     }
 
     public String getAlarmId() {
@@ -36,35 +33,19 @@ public class AlarmModel {
         this.alarmId = alarmId;
     }
 
-    public AlarmManager getAlarmManager() {
-        return alarmManager;
-    }
-
-    public void setAlarmManager(AlarmManager alarmManager) {
-        this.alarmManager = alarmManager;
-    }
-
-    public Intent getIntent() {
-        return intent;
-    }
-
-    public void setIntent(Intent intent) {
-        this.intent = intent;
-    }
-
-    public PendingIntent getPendingIntent() {
-        return pendingIntent;
-    }
-
-    public void setPendingIntent(PendingIntent pendingIntent) {
-        this.pendingIntent = pendingIntent;
-    }
-
     public String getState() {
         return state;
     }
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

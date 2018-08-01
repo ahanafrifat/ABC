@@ -8,7 +8,6 @@ import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.interfaces.homeInterface.IHomeFragmentInterface;
 import com.appinionbd.abc.interfaces.presenterInterface.IHome;
 import com.appinionbd.abc.model.dataHolder.AlarmModel;
-import com.appinionbd.abc.model.dataHolder.AlarmModelRealm;
 import com.appinionbd.abc.model.dataHolder.UserInfo;
 import com.appinionbd.abc.model.dataModel.PatientWithDate;
 import com.appinionbd.abc.model.dataModel.TaskCategory;
@@ -75,68 +74,81 @@ public class HomePresenter  implements IHome.Presenter{
     }
 
     @Override
-    public void saveReminder(AlarmModel alarmModel) {
+    public void saveReminder(List<AlarmModel> alarmModels) {
 
-        AlarmModelRealm alarmModelRealm = new AlarmModelRealm();
-
-        alarmModelRealm.setAlarmId(alarmModel.getAlarmId());
-        alarmModelRealm.setState(alarmModel.getState());
-
-        try(Realm realmInstance = Realm.getDefaultInstance()){
-            realmInstance.executeTransaction(realm -> {
-                realm.insertOrUpdate(alarmModelRealm);
-            });
+        for(AlarmModel model : alarmModels){
+            try(Realm realmInstance = Realm.getDefaultInstance()) {
+                realmInstance.executeTransaction(realm -> {
+                    realm.insertOrUpdate(model);
+                });
+            }
         }
     }
 
     @Override
-    public void checkReminder(String time, int layoutPosition, List<AlarmModel> alarmModels, ImageView imageViewTime, Button buttonDone) {
+    public void checkReminder(String id, ImageView imageViewTime, Button buttonDone) {
 
-
-        view.notificationAndAlarmON(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
-        String tempAlarmId = alarmModels.get(layoutPosition).getAlarmId();
         boolean checkAlarm = false;
 
         try(Realm realm = Realm.getDefaultInstance()){
-            AlarmModelRealm alarmModelRealm = realm.where(AlarmModelRealm.class)
-                    .equalTo("alarmId" , tempAlarmId)
+
+            AlarmModel alarmModel = realm.where(AlarmModel.class)
+                    .equalTo("alarmId" , id)
                     .findFirst();
-            if(alarmModelRealm.getState().equals("yes")) {
+
+            if(alarmModel.getState().equals("yes")) {
                 checkAlarm = true;
             }
-            else if(alarmModelRealm.getState().equals("no")) {
+            else if(alarmModel.getState().equals("no")) {
                 checkAlarm = false;
             }
         }
         if(checkAlarm) {
-//            try(Realm realm = Realm.getDefaultInstance()) {
-//                AlarmModelRealm alarmModelRealm = realm.where(AlarmModelRealm.class)
-//                        .equalTo("alarmId" , tempAlarmId)
-//                        .findFirst();
-//                alarmModelRealm.setState("no");
-//                realm.executeTransaction(realm1 -> {
-//                    realm1.insertOrUpdate(alarmModelRealm);
-//                });
-//            }
-            view.notificationAndAlarmOff(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
+            AlarmModel tempAlarmModel = new AlarmModel();
+            try(Realm realm = Realm.getDefaultInstance()) {
+                AlarmModel alarmModel = realm.where(AlarmModel.class)
+                        .equalTo("alarmId" , id)
+                        .findFirst();
+
+                tempAlarmModel.setAlarmId(id);
+                tempAlarmModel.setState("no");
+                tempAlarmModel.setTime(alarmModel.getTime());
+
+                realm.executeTransaction(realm1 -> {
+                    realm1.insertOrUpdate(alarmModel);
+                });
+            }
+            view.notificationAndAlarmON(id ,imageViewTime , buttonDone);
         }
         else if(!checkAlarm) {
-//            try(Realm realm = Realm.getDefaultInstance()) {
-//                AlarmModelRealm alarmModelRealm = realm.where(AlarmModelRealm.class)
-//                        .equalTo("alarmId" , tempAlarmId)
-//                        .findFirst();
-//                alarmModelRealm.setState("yes");
-//                realm.executeTransaction(realm1 -> {
-//                    realm1.insertOrUpdate(alarmModelRealm);
-//                });
-//            }
-            view.notificationAndAlarmON(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
+            AlarmModel tempAlarmModel = new AlarmModel();
+            try(Realm realm = Realm.getDefaultInstance()) {
+                AlarmModel alarmModel = realm.where(AlarmModel.class)
+                        .equalTo("alarmId" , id)
+                        .findFirst();
+                tempAlarmModel.setAlarmId(id);
+                tempAlarmModel.setState("yes");
+                tempAlarmModel.setTime(alarmModel.getTime());
+                realm.executeTransaction(realm1 -> {
+                    realm1.insertOrUpdate(tempAlarmModel);
+                });
+            }
+            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
         }
 
     }
 
     @Override
-    public void taskDone(String alarmId) {
-
+    public void taskDone(String id, ImageView imageViewTime, Button buttonDone) {
+        try(Realm realm = Realm.getDefaultInstance()) {
+            AlarmModel alarmModel = realm.where(AlarmModel.class)
+                    .equalTo("alarmId" , id)
+                    .findFirst();
+            alarmModel.setState("no");
+            realm.executeTransaction(realm1 -> {
+                realm1.insertOrUpdate(alarmModel);
+            });
+        }
+        view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
     }
 }

@@ -13,9 +13,12 @@ import android.widget.TextView;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.interfaces.recyclerAdapterHomeInterface.ITaskSelection;
+import com.appinionbd.abc.model.dataHolder.AlarmModel;
 import com.appinionbd.abc.model.dataModel.TaskCategory;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHome.MyViewHolder> {
 
@@ -45,11 +48,27 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         });
         holder.textViewName.setText(taskCategories.get(position).getTaskName());
         holder.textViewTime.setText(taskCategories.get(position).getReminderTime());
-//        holder.imageViewTime.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
+        holder.imageViewTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        boolean state;
+
+        state = checkAlarm(taskCategories.get(position).getId());
+        if (state)
+            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
+        else if(!state)
+            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
+
+
+        holder.imageViewTime.setOnClickListener(v -> iTaskSelection.setNotificationAndAlarm(
+                taskCategories.get(position).getReminderTime()
+                , taskCategories.get(position).getId()
+                , holder.imageViewTime
+                , holder.buttonDone));
+
     }
 
     @Override
@@ -64,6 +83,7 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         ImageView imageViewTime;
         Button buttonDone;
         LinearLayout linearLayoutPatient;
+//        boolean state;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -74,11 +94,23 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
             buttonDone = itemView.findViewById(R.id.button_done);
             linearLayoutPatient = itemView.findViewById(R.id.linearLayout_patient);
 
-            buttonDone.setOnClickListener(v -> iTaskSelection.reminderDone(getLayoutPosition() , imageViewTime , buttonDone));
-
-            imageViewTime.setOnClickListener(v -> iTaskSelection.setNotificationAndAlarm(taskCategories.get(getLayoutPosition()).getReminderTime() , getLayoutPosition() , imageViewTime , buttonDone));
+            buttonDone.setOnClickListener(v -> iTaskSelection.reminderDone(taskCategories.get(getLayoutPosition()).getId() , imageViewTime , buttonDone));
 
             linearLayoutPatient.setOnClickListener(v -> iTaskSelection.gotoTask(taskCategories.get(getLayoutPosition())));
         }
+    }
+
+    private boolean checkAlarm(String id) {
+        boolean state = false;
+        try(Realm realm = Realm.getDefaultInstance()){
+            AlarmModel alarmModel = realm.where(AlarmModel.class)
+                    .equalTo("alarmId" , id)
+                    .findFirst();
+            if(alarmModel.getState().equals("yes"))
+                state = true;
+            else if( alarmModel.getState().equals("yes") )
+                state = false;
+        }
+        return state;
     }
 }

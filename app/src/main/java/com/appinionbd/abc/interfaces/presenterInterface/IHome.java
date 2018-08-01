@@ -14,9 +14,9 @@ public interface IHome {
 
         void taskList(List<TaskCategory> taskCategories);
 
-        void notificationAndAlarmOff(String time, int layoutPosition, List<AlarmModel> alarmModels, ImageView imageViewTime, Button buttonDone);
+        void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone);
 
-        void notificationAndAlarmON(String time, int layoutPosition, List<AlarmModel> alarmModels, ImageView imageViewTime, Button buttonDone);
+        void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone);
 
     }
 
@@ -24,10 +24,10 @@ public interface IHome {
 
         void sendDate(String time);
 
-        void saveReminder(AlarmModel alarmModel);
+        void saveReminder(List<AlarmModel> alarmModels);
 
-        void checkReminder(String time, int layoutPosition, List<AlarmModel> alarmModels, ImageView imageViewTime, Button buttonDone);
+        void checkReminder(String id, ImageView imageViewTime, Button buttonDone);
 
-        void taskDone(String alarmId);
+        void taskDone(String id, ImageView imageViewTime, Button buttonDone);
     }
 }
