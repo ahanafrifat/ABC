@@ -39,17 +39,20 @@
         </activity>
         <activity android:name=".view.personalInformation.PersonalInformationActivity" />
         <activity
+            android:name=".view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity"
+            android:noHistory="true" />
+        <activity
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity" />
         <activity android:name=".view.patientActivity.PatientActivity" />
         <activity
             android:name=".view.patientCode.PatientCodeActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".view.capturePicture.BarcodeCaptureActivity" />
         <activity android:name=".view.createTask.CreateTaskActivity" />
-        <activity android:name=".view.PatientInfo.PatientInfoActivity"></activity>
+        <activity android:name=".view.PatientInfo.PatientInfoActivity" />
+        <activity android:name=".view.alarm.AlarmActivity"></activity>
     </application>
 
 </manifest>

@@ -48,11 +48,6 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         });
         holder.textViewName.setText(taskCategories.get(position).getTaskName());
         holder.textViewTime.setText(taskCategories.get(position).getReminderTime());
-        holder.imageViewTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
         boolean state;
 
@@ -108,7 +103,7 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
                     .findFirst();
             if(alarmModel.getState().equals("yes"))
                 state = true;
-            else if( alarmModel.getState().equals("yes") )
+            else if( alarmModel.getState().equals("no") )
                 state = false;
         }
         return state;

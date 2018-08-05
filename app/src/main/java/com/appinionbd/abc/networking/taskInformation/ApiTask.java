@@ -56,7 +56,7 @@ public class ApiTask {
                             taskCategory.setTaskStatus(category.getTaskStatus());
                             taskCategory.setCompletDate(category.getCompletDate());
                             taskCategory.setTaskCategory(category.getTaskCategory());
-                            taskCategory.setReminderTime(category.getReminderTime());
+                            taskCategory.setReminderTime(category.getReminderTime()+ " " +category.getStartDate());
 
                             taskCategories.add(taskCategory);
 

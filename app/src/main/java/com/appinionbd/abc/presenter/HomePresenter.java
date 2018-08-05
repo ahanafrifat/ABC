@@ -89,6 +89,7 @@ public class HomePresenter  implements IHome.Presenter{
     public void checkReminder(String id, ImageView imageViewTime, Button buttonDone) {
 
         boolean checkAlarm = false;
+        String tempTime;
 
         try(Realm realm = Realm.getDefaultInstance()){
 
@@ -113,12 +114,14 @@ public class HomePresenter  implements IHome.Presenter{
                 tempAlarmModel.setAlarmId(id);
                 tempAlarmModel.setState("no");
                 tempAlarmModel.setTime(alarmModel.getTime());
+                tempTime = alarmModel.getTime();
 
                 realm.executeTransaction(realm1 -> {
                     realm1.insertOrUpdate(alarmModel);
                 });
             }
-            view.notificationAndAlarmON(id ,imageViewTime , buttonDone);
+            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
+//            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
         }
         else if(!checkAlarm) {
             AlarmModel tempAlarmModel = new AlarmModel();
@@ -129,11 +132,16 @@ public class HomePresenter  implements IHome.Presenter{
                 tempAlarmModel.setAlarmId(id);
                 tempAlarmModel.setState("yes");
                 tempAlarmModel.setTime(alarmModel.getTime());
+
+                tempTime = alarmModel.getTime();
+
+
                 realm.executeTransaction(realm1 -> {
                     realm1.insertOrUpdate(tempAlarmModel);
                 });
             }
-            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
+            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
+//            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
         }
 
     }

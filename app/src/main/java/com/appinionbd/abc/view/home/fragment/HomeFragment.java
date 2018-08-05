@@ -1,7 +1,10 @@
 package com.appinionbd.abc.view.home.fragment;
 
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,9 +33,13 @@ import com.appinionbd.abc.model.dataModel.Patient;
 import com.appinionbd.abc.model.dataModel.TaskCategory;
 import com.appinionbd.abc.presenter.HomePresenter;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterHome;
+import com.appinionbd.abc.view.alarm.AlarmActivity;
+import com.appinionbd.abc.view.alarm.MyAlarm;
 import com.appinionbd.abc.view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity;
 import com.appinionbd.abc.view.createTask.CreateTaskActivity;
+import com.appinionbd.abc.view.home.HomeActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +70,10 @@ public class HomeFragment extends Fragment implements IHome.View {
     private final String STATE_YES = "yes";
     private final String STATE_NO = "no";
 
+//    private AlarmManager alarmManager;
+//    private PendingIntent pendingIntent;
+//    Intent intentAlarm;
+
     IHome.Presenter homePresenter;
 
 
@@ -83,10 +94,14 @@ public class HomeFragment extends Fragment implements IHome.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        intentAlarm = new Intent(this.getActivity(), MyAlarm.class);
         showHomeList();
     }
 
     private void showHomeList() {
+
+//        intentAlarm = new Intent(this.getActivity(), MyAlarm.class);
+//        alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
 
         recyclerViewHome = getActivity().findViewById(R.id.recyclerView_home);
         cardViewCreateTask = getActivity().findViewById(R.id.cardView_create_task);
@@ -124,19 +139,20 @@ public class HomeFragment extends Fragment implements IHome.View {
     }
 
     private void updateHomeDate() {
+
         String dateMonthYear = "dd ,MMMM yyyy";
-        //2018-07-20 api date
-        String dateForSort = "yyyy-MM-dd";
-        String apiDate;
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateMonthYear, Locale.ENGLISH);
-        SimpleDateFormat simpleDateFormatSort = new SimpleDateFormat(dateForSort, Locale.ENGLISH);
-
         time = simpleDateFormat.format(calendar.getTime());
-        apiDate = simpleDateFormatSort.format(calendar.getTime());
         textViewDateHome.setText(time);
-//        homePresenter.sendDate(dateforSort);
+
+
+        //2018-07-20 api date
+        String dateForSendInApi = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormatForSendInApi = new SimpleDateFormat(dateForSendInApi, Locale.ENGLISH);
+        String apiDate = simpleDateFormatForSendInApi.format(calendar.getTime());
+
         homePresenter.sendDate(apiDate);
+
     }
 
     private void gotoCreateTask() {
@@ -159,6 +175,7 @@ public class HomeFragment extends Fragment implements IHome.View {
                 recyclerViewHome.setVisibility(View.VISIBLE);
 
                 alarmModels = new ArrayList<>();
+
 
                 for (TaskCategory taskCategory : taskCategories) {
                     alarmModels.add(new AlarmModel(taskCategory.getId() , STATE_NO , taskCategory.getReminderTime()));
@@ -193,20 +210,47 @@ public class HomeFragment extends Fragment implements IHome.View {
         }
     }
 
-    private void taskReminderDone(String id, ImageView imageViewTime, Button buttonDone) {
-
-    }
-
     @Override
     public void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone) {
-        imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-        buttonDone.setVisibility(View.GONE);
+
+//        intentAlarm.putExtra("extra" , STATE_NO);
+//        this.getActivity().sendBroadcast(intentAlarm);
+//        alarmManager.cancel(pendingIntent);
+//
+//        imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
+//        buttonDone.setVisibility(View.GONE);
     }
 
     @Override
-    public void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone) {
-        imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-        buttonDone.setVisibility(View.VISIBLE);
+    public void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone, String tempTime) {
+
+        Intent intent = new Intent(getActivity() , AlarmActivity.class);
+        intent.putExtra("ID" , id);
+        intent.putExtra("TIME" , tempTime);
+        startActivity(intent);
+
+//        Calendar cal = Calendar.getInstance();
+//        String time = "18:05:00 05-08-2018";
+////                "yyyy-MM-dd'T'HH:mm:ssZ"
+//        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy", Locale.getDefault());
+//
+//        try {
+//            cal.setTime(sdf.parse(time));
+//            AppUtil.log("Check", "time = " + cal.getTimeInMillis());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        intentAlarm.putExtra("extra" , STATE_YES);
+//        pendingIntent = PendingIntent.getBroadcast(this.getActivity() , 0 , intentAlarm , PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        long checkTime = cal.getTimeInMillis();
+//
+//        alarmManager.set(AlarmManager.RTC_WAKEUP , checkTime , pendingIntent);
+//
+//        imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
+//        buttonDone.setVisibility(View.VISIBLE);
+
     }
 }
 

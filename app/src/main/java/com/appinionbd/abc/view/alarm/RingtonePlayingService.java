@@ -10,13 +10,13 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.view.home.HomeActivity;
 
 public class RingtonePlayingService extends Service {
 
     private boolean inRunning;
-    private Context context;
     MediaPlayer mediaPlayer;
     private int startId;
 
@@ -55,9 +55,12 @@ public class RingtonePlayingService extends Service {
 
         if(!this.inRunning && startId == 1){
             AppUtil.log("RingtonePlayingService" , "RingtonePlayingService is Running");
-            mediaPlayer = MediaPlayer.create(this , Notification.DEFAULT_SOUND);
+
+            mediaPlayer = MediaPlayer.create(this , R.raw.richard_dawkins_1);
             mediaPlayer.start();
+
             notificationManager.notify(0 , notification);
+
             this.inRunning = true ;
             this.startId = 0;
         }
@@ -73,8 +76,10 @@ public class RingtonePlayingService extends Service {
         }
         else{
             AppUtil.log("RingtonePlayingService" , "if there is sound and you want to end");
+
             mediaPlayer.stop();
             mediaPlayer.reset();
+
             this.inRunning = false ;
             this.startId =0;
         }

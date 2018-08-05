@@ -16,7 +16,7 @@ public interface IHome {
 
         void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone);
 
-        void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone);
+        void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone, String tempTime);
 
     }
 

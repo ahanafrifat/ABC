@@ -6,22 +6,17 @@ import android.content.Intent;
 
 import com.appinionbd.abc.appUtils.AppUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 public class MyAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Calendar calendar = Calendar.getInstance();
-        String time;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH :mm: ss : SS z dd ,MMMM yyyy" , Locale.ENGLISH);
+        String state = intent.getExtras().getString("extra");
+        AppUtil.log("MyActivity", "In the receiver with " + state);
 
-        time = simpleDateFormat.format(calendar.getTime());
-        AppUtil.log("MyAlarm" , "Alarm just fired : " + time);
+        Intent serviceIntent = new Intent(context,RingtonePlayingService.class);
+        serviceIntent.putExtra("extra", state);
 
-//        Intent serviceIntent = new Intent(context , Ring)
+        context.startService(serviceIntent);
     }
 }
