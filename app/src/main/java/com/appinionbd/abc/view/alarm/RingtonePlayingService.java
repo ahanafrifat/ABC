@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
+import com.appinionbd.abc.presenter.ChoosePatientOrMonitorPresenter;
 import com.appinionbd.abc.view.home.HomeActivity;
 
 public class RingtonePlayingService extends Service {
@@ -32,7 +33,7 @@ public class RingtonePlayingService extends Service {
 
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        Intent intent1 = new Intent(this.getApplicationContext() , HomeActivity.class);
+        Intent intent1 = new Intent(this.getApplicationContext() , ChoosePatientOrMonitorPresenter.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , intent1 , 0);
 
         Notification notification = new Notification.Builder(this)
@@ -40,6 +41,7 @@ public class RingtonePlayingService extends Service {
                 .setContentText("click Me !")
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_patient)
                 .build();
 
         String state = intent.getExtras().getString("extra");
@@ -52,6 +54,19 @@ public class RingtonePlayingService extends Service {
             else
                 startId = 0;
         }
+
+//        assert state != null;
+//        switch (state) {
+//            case "no":
+//                startId = 0;
+//                break;
+//            case "yes":
+//                startId = 1;
+//                break;
+//            default:
+//                startId = 0;
+//                break;
+//        }
 
         if(!this.inRunning && startId == 1){
             AppUtil.log("RingtonePlayingService" , "RingtonePlayingService is Running");
@@ -94,5 +109,6 @@ public class RingtonePlayingService extends Service {
     public void onDestroy() {
         AppUtil.log("RingtonePlayingService" , "RingtonePlayingService is destroyed");
         super.onDestroy();
+        this.inRunning = false;
     }
 }

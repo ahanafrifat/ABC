@@ -6,11 +6,9 @@ import android.content.Intent;
 
 import com.appinionbd.abc.appUtils.AppUtil;
 
-public class MyAlarm extends BroadcastReceiver {
-
+public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-
         String state = intent.getExtras().getString("extra");
         AppUtil.log("MyActivity", "In the receiver with " + state);
 

@@ -22,7 +22,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    Intent intentAlarm;
+    private Intent intentAlarm;
 
     private TextView textViewReminderActivityId;
     private TextView textViewReminderActivityTime;
@@ -58,7 +58,7 @@ public class AlarmActivity extends AppCompatActivity {
         textViewReminderActivityId.setText(id);
         textViewReminderActivityTime.setText(time);
 
-        intentAlarm = new Intent(this, MyAlarm.class);
+        intentAlarm = new Intent(this, AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         imageViewReminderActivityStatus.setOnClickListener(v -> {
@@ -68,7 +68,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     private void setAlarm() {
         Calendar cal = Calendar.getInstance();
-        String time = "18:33:00 05-08-2018";
+        String time = "14:58:00 06-08-2018";
 //                "yyyy-MM-dd'T'HH:mm:ssZ"
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy", Locale.getDefault());
 

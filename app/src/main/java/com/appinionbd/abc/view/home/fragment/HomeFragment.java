@@ -1,10 +1,7 @@
 package com.appinionbd.abc.view.home.fragment;
 
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,12 +31,9 @@ import com.appinionbd.abc.model.dataModel.TaskCategory;
 import com.appinionbd.abc.presenter.HomePresenter;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterHome;
 import com.appinionbd.abc.view.alarm.AlarmActivity;
-import com.appinionbd.abc.view.alarm.MyAlarm;
 import com.appinionbd.abc.view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity;
 import com.appinionbd.abc.view.createTask.CreateTaskActivity;
-import com.appinionbd.abc.view.home.HomeActivity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

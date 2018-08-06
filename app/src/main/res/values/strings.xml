@@ -32,5 +32,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_of_days">No of days</string>
+    <string name="retype_password">Retype Password</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>
