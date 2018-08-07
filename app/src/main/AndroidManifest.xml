@@ -19,13 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".view.signUp.SignUpActivity"
-            android:windowSoftInputMode="stateHidden" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".view.signIn.SignInActivity"
@@ -37,24 +30,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.signUp.SignUpActivity"
+            android:windowSoftInputMode="stateHidden" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity android:name=".view.personalInformation.PersonalInformationActivity" />
+
         <activity
             android:name=".view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity"
             android:noHistory="true" />
+
         <activity
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
+
         <activity android:name=".view.patientActivity.PatientActivity" />
+
         <activity
             android:name=".view.patientCode.PatientCodeActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".view.capturePicture.BarcodeCaptureActivity" />
+
         <activity android:name=".view.createTask.CreateTaskActivity" />
+
         <activity android:name=".view.PatientInfo.PatientInfoActivity" />
+
         <activity android:name=".view.alarm.AlarmActivity"></activity>
 
         <receiver android:name=".view.alarm.AlarmReceiver"/>
+
         <service
             android:name=".view.alarm.RingtonePlayingService"
             android:enabled="true">

@@ -41,11 +41,13 @@ public class LoginAuthentication {
                         gotoLoginAuth(apiAuth.getAuthorization() , userName , password , iAuthentication);
                     }
                 }
+                else
+                    iAuthentication.authError("Auth error : " + response.code());
             }
 
             @Override
             public void onFailure(Call<APIAuth> call, Throwable t) {
-
+                iAuthentication.authConnectionError("Auth connection error : " + t.getMessage());
                 AppUtil.log("LoginAuthentication" , "apiAuthentication Error : " + t.getMessage());
             }
         });
@@ -61,12 +63,21 @@ public class LoginAuthentication {
                     if(loginAuth != null && loginAuth.getStatus() == 200 && !loginAuth.getToken().isEmpty()){
                         gotoGetUserInfo(loginAuth.getToken() , iAuthentication);
                     }
+                    else if(response.code() == 403){
+                        iAuthentication.wrongUserNameOrPassword("Wrong email or password !");
+                    }
                 }
+                else if(response.code() == 403){
+                    iAuthentication.wrongUserNameOrPassword("Wrong email or password !");
+                }
+                else
+                    iAuthentication.loginAuthError("Auth error : " + response.code());
             }
 
             @Override
             public void onFailure(Call<LoginAuth> call, Throwable t) {
                 AppUtil.log("LoginAuthentication" , "gotoLoginAuth Error : " + t.getMessage());
+                iAuthentication.loginAuthConnectionError("Auth connection error : " + t.getMessage());
             }
         });
     }
@@ -101,12 +112,14 @@ public class LoginAuthentication {
                         }
                     }
                 }
+                else
+                    iAuthentication.userInfoError("Server error : " + response.code());
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 AppUtil.log("LoginAuthentication" , "gotoGetUserInfo Error : " + t.getMessage());
-                iAuthentication.connectionError();
+                iAuthentication.userInfoConnectionError("Connection error : " + t.getMessage());
             }
         });
     }

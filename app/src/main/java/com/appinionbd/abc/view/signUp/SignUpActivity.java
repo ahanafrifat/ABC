@@ -21,6 +21,7 @@ import com.appinionbd.abc.view.signIn.SignInActivity;
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
+import io.github.pierry.progress.Progress;
 
 public class SignUpActivity extends AppCompatActivity implements ISignUp.View {
 
@@ -30,6 +31,8 @@ public class SignUpActivity extends AppCompatActivity implements ISignUp.View {
     private TextInputEditText textInputEditTextSignUpRetypePassword;
 
     private Button buttonSignUp;
+
+    private Progress progress;
 
     private ISignUp.Presenter signUpPresenter;
 
@@ -44,6 +47,8 @@ public class SignUpActivity extends AppCompatActivity implements ISignUp.View {
     protected void onStart() {
         super.onStart();
 
+//        progress = new Progress(this);
+
         textInputEditTextSignUpName = findViewById(R.id.textInputEditText_sign_up_name);
         textInputEditTextSignUpEmail = findViewById(R.id.textInputEditText_sign_up_email);
         textInputEditText_sign_up_password = findViewById(R.id.textInputEditText_sign_up_password);
@@ -55,27 +60,40 @@ public class SignUpActivity extends AppCompatActivity implements ISignUp.View {
             if(isNetworkConnected()) {
                 checkForEmptyField();
             }
-            else
+            else {
                 showAlertDialogNetworkError();
+            }
         });
 
     }
 
     private void checkForEmptyField() {
-        if(textInputEditTextSignUpName.getText().toString().isEmpty())
+        progress = new Progress(this);
+        progress.light("Please Wait !");
+
+        if (textInputEditTextSignUpName.getText().toString().isEmpty()) {
+            progress.dismiss();
             textInputEditTextSignUpName.setError("Please Enter a name !");
-        else if(textInputEditTextSignUpEmail.getText().toString().isEmpty())
+        }
+        else if (textInputEditTextSignUpEmail.getText().toString().isEmpty()) {
+            progress.dismiss();
             textInputEditTextSignUpEmail.setError("Please Enter a E-mail !");
-        else if(textInputEditText_sign_up_password.getText().toString().isEmpty())
+        }
+        else if (textInputEditText_sign_up_password.getText().toString().isEmpty()) {
+            progress.dismiss();
             textInputEditText_sign_up_password.setError("Please Enter a password !");
-        else if(textInputEditTextSignUpRetypePassword.getText().toString().isEmpty())
+        }
+        else if (textInputEditTextSignUpRetypePassword.getText().toString().isEmpty()) {
+            progress.dismiss();
             textInputEditTextSignUpRetypePassword.setError("Please retype password !");
-        else
+        }
+        else{
             signUpPresenter.signUp(
                     textInputEditTextSignUpName.getText().toString()
                     , textInputEditTextSignUpEmail.getText().toString()
                     , textInputEditText_sign_up_password.getText().toString()
                     , textInputEditTextSignUpRetypePassword.getText().toString());
+        }
 
     }
 
@@ -104,7 +122,35 @@ public class SignUpActivity extends AppCompatActivity implements ISignUp.View {
     }
 
     @Override
+    public void successful(String message) {
+        progress.dismiss();
+        Toasty.success(this , message , Toast.LENGTH_LONG , true);
+        Intent intent = new Intent(this , SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
+    @Override
     public void errorPasswordDidNotMatch() {
-        Toasty.error(this , "Password Did Not Match !" , Toast.LENGTH_LONG , true).show();
+        progress.dismiss();
+        Toasty.warning(this , "Password Did Not Match !" , Toast.LENGTH_LONG , true).show();
+    }
+
+    @Override
+    public void networkProblem(String message) {
+        progress.dismiss();
+        Toasty.error(this , message , Toast.LENGTH_LONG , true).show();
+    }
+
+    @Override
+    public void alreadyAccountCreated(String message) {
+        progress.dismiss();
+        Toasty.info(this , message , Toast.LENGTH_LONG , true).show();
+    }
+
+    @Override
+    public void signUpError(String message) {
+        progress.dismiss();
+        Toasty.error(this , message , Toast.LENGTH_LONG , true).show();
     }
 }

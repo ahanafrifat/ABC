@@ -1,8 +1,14 @@
 package com.appinionbd.abc.presenter;
 
+import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.interfaces.networkInterface.IAuthentication;
 import com.appinionbd.abc.interfaces.presenterInterface.ILogin;
+import com.appinionbd.abc.model.dataHolder.UserInfo;
+import com.appinionbd.abc.model.dataModel.User;
 import com.appinionbd.abc.networking.authentication.LoginAuthentication;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class LoginPresenter implements ILogin.Presenter {
     private ILogin.View view;
@@ -30,20 +36,75 @@ public class LoginPresenter implements ILogin.Presenter {
                 }
 
                 @Override
-                public void authFailed() {
-
+                public void wrongUserNameOrPassword(String message) {
+                    view.wrongUsernameOrPassword(message);
                 }
 
                 @Override
-                public void wrongUserNameOrPassword() {
-
+                public void authError(String message) {
+                    view.loginError(message);
                 }
 
                 @Override
-                public void connectionError() {
+                public void authConnectionError(String message) {
+                    view.loginError(message);
+                }
 
+                @Override
+                public void loginAuthError(String message) {
+                    view.loginError(message);
+                }
+
+                @Override
+                public void loginAuthConnectionError(String message) {
+                    view.loginError(message);
+                }
+
+                @Override
+                public void userInfoError(String message) {
+                    view.loginError(message);
+                }
+
+                @Override
+                public void userInfoConnectionError(String message) {
+                    view.loginError(message);
                 }
             });
         }
     }
+
+    @Override
+    public void checkUserExist() {
+        int userSize = 0;
+        int userInfoSize = 0;
+        try(Realm realm = Realm.getDefaultInstance()){
+            RealmResults<User> userRealmResults = realm.where(User.class).findAll();
+            AppUtil.log("LoginPresenter" , "Total number of users : " + userRealmResults.size());
+
+            userSize = userRealmResults.size();
+
+            RealmResults<UserInfo> userInfoRealmResults = realm.where(UserInfo.class).findAll();
+            AppUtil.log("LoginPresenter" , "Total number of users : " + userInfoRealmResults.size());
+
+            userInfoSize = userInfoRealmResults.size();
+        }
+
+        if(userSize == 0 && userInfoSize == 0){
+            view.emptyUser();
+        }
+        else
+            view.userExist();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -60,4 +60,11 @@ public interface ApiInterface {
     @GET("/abcApp_api/api/task/add_monitors_patient_list")
     Call<Monitor> trackListCall(@Header("token") String token);
 
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @POST("/abcApp_api/api/app_auth/signup")
+    Call<ResponseModel> signUpCall(@Header("Authorization") String authorization ,
+                                   @Query("user_name") String userName ,
+                                   @Query("user_email") String email ,
+                                   @Query("password") String password);
+
 }
