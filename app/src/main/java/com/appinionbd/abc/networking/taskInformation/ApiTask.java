@@ -2,6 +2,7 @@ package com.appinionbd.abc.networking.taskInformation;
 
 import com.appinionbd.abc.interfaces.createInterface.ICreate;
 import com.appinionbd.abc.interfaces.homeInterface.IHomeFragmentInterface;
+import com.appinionbd.abc.model.dataHolder.AlarmModel;
 import com.appinionbd.abc.model.dataModel.PatientWithDate;
 import com.appinionbd.abc.model.dataModel.ResponseTask;
 import com.appinionbd.abc.model.dataModel.TaskCategory;
@@ -41,6 +42,7 @@ public class ApiTask {
                     ResponseTask responseTask = response.body();
 
                     List<TaskCategory> taskCategories = new ArrayList<>();
+                    List<AlarmModel> alarmModels = new ArrayList<>();
 
                     try(Realm realm = Realm.getDefaultInstance()){
 
@@ -52,6 +54,9 @@ public class ApiTask {
                             taskCategory.setTblTaskCategorySerId(category.getTblTaskCategorySerId());
                             taskCategory.setStartDate(category.getStartDate());
                             taskCategory.setReminder(category.getReminder());
+
+                            taskCategory.setReminder(category.getReminderStatus());
+
                             taskCategory.setTaskNotes(category.getTaskNotes());
                             taskCategory.setTaskStatus(category.getTaskStatus());
                             taskCategory.setCompletDate(category.getCompletDate());
@@ -60,8 +65,27 @@ public class ApiTask {
 
                             taskCategories.add(taskCategory);
 
+                            AlarmModel alarmModel = new AlarmModel();
+                            alarmModel.setAlarmId(category.getId());
+                            alarmModel.setTime(category.getReminderTime()+ " " +category.getStartDate());
+
+                            AlarmModel relamAlarmModel = realm.where(AlarmModel.class)
+                                    .equalTo("alarmId" , category.getId())
+                                    .equalTo("state" , "no")
+                                    .or()
+                                    .equalTo("state" , "yes")
+                                    .findFirst();
+                            if(relamAlarmModel == null){
+                                alarmModel.setState("no");
+                            }
+                            else
+                                alarmModel.setState("yes");
+
+                            alarmModels.add(alarmModel);
+
                             realm.executeTransaction(realm1 -> {
                                 realm1.insertOrUpdate(taskCategory);
+                                realm1.insertOrUpdate(alarmModel);
                             });
 
                         }

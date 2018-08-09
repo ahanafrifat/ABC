@@ -1,10 +1,9 @@
-package com.appinionbd.abc.barCodeScanner;
+package com.appinionbd.abc.extraLibrary.barCodeScanner;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;

@@ -24,6 +24,11 @@ public class TaskCategory extends RealmObject {
     @SerializedName("reminder")
     @Expose
     private String reminder;
+
+    @SerializedName("reminder_status")
+    @Expose
+    private String reminderStatus;
+
     @SerializedName("task_notes")
     @Expose
     private String taskNotes;
@@ -44,12 +49,13 @@ public class TaskCategory extends RealmObject {
     public TaskCategory() {
     }
 
-    public TaskCategory(String id, String taskName, String tblTaskCategorySerId, String startDate, String reminder, String taskNotes, String taskStatus, String completDate, String taskCategory, String reminderTime) {
+    public TaskCategory(String id, String taskName, String tblTaskCategorySerId, String startDate, String reminder, String reminderStatus, String taskNotes, String taskStatus, String completDate, String taskCategory, String reminderTime) {
         this.id = id;
         this.taskName = taskName;
         this.tblTaskCategorySerId = tblTaskCategorySerId;
         this.startDate = startDate;
         this.reminder = reminder;
+        this.reminderStatus = reminderStatus;
         this.taskNotes = taskNotes;
         this.taskStatus = taskStatus;
         this.completDate = completDate;
@@ -95,6 +101,14 @@ public class TaskCategory extends RealmObject {
 
     public void setReminder(String reminder) {
         this.reminder = reminder;
+    }
+
+    public String getReminderStatus() {
+        return reminderStatus;
+    }
+
+    public void setReminderStatus(String reminderStatus) {
+        this.reminderStatus = reminderStatus;
     }
 
     public String getTaskNotes() {

@@ -24,8 +24,6 @@ public interface IHome {
 
         void sendDate(String time);
 
-        void saveReminder(List<AlarmModel> alarmModels);
-
         void checkReminder(String id, ImageView imageViewTime, Button buttonDone);
 
         void taskDone(String id, ImageView imageViewTime, Button buttonDone);

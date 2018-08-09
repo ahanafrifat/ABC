@@ -26,12 +26,12 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.appinionbd.abc.R;
-import com.appinionbd.abc.barCodeScanner.BarcodeGraphic;
-import com.appinionbd.abc.barCodeScanner.BarcodeGraphicTracker;
-import com.appinionbd.abc.barCodeScanner.BarcodeTrackerFactory;
-import com.appinionbd.abc.camera.CameraSource;
-import com.appinionbd.abc.camera.CameraSourcePreview;
-import com.appinionbd.abc.camera.GraphicOverlay;
+import com.appinionbd.abc.extraLibrary.barCodeScanner.BarcodeGraphic;
+import com.appinionbd.abc.extraLibrary.barCodeScanner.BarcodeGraphicTracker;
+import com.appinionbd.abc.extraLibrary.barCodeScanner.BarcodeTrackerFactory;
+import com.appinionbd.abc.extraLibrary.camera.CameraSource;
+import com.appinionbd.abc.extraLibrary.camera.CameraSourcePreview;
+import com.appinionbd.abc.extraLibrary.camera.GraphicOverlay;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;

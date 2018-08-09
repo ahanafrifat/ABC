@@ -1,4 +1,4 @@
-package com.appinionbd.abc.camera;
+package com.appinionbd.abc.extraLibrary.camera;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

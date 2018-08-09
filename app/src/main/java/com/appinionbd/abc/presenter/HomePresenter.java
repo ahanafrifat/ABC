@@ -74,18 +74,6 @@ public class HomePresenter  implements IHome.Presenter{
     }
 
     @Override
-    public void saveReminder(List<AlarmModel> alarmModels) {
-
-        for(AlarmModel model : alarmModels){
-            try(Realm realmInstance = Realm.getDefaultInstance()) {
-                realmInstance.executeTransaction(realm -> {
-                    realm.insertOrUpdate(model);
-                });
-            }
-        }
-    }
-
-    @Override
     public void checkReminder(String id, ImageView imageViewTime, Button buttonDone) {
 
         boolean checkAlarm = false;

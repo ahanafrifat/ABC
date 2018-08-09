@@ -1,11 +1,11 @@
-package com.appinionbd.abc.barCodeScanner;
+package com.appinionbd.abc.extraLibrary.barCodeScanner;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.appinionbd.abc.camera.GraphicOverlay;
+import com.appinionbd.abc.extraLibrary.camera.GraphicOverlay;
 import com.google.android.gms.vision.barcode.Barcode;
 
 public class BarcodeGraphic extends GraphicOverlay.Graphic {

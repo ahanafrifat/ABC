@@ -1,4 +1,4 @@
-package com.appinionbd.abc.camera;
+package com.appinionbd.abc.extraLibrary.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;

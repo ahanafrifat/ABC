@@ -1,6 +1,6 @@
-package com.appinionbd.abc.barCodeScanner;
+package com.appinionbd.abc.extraLibrary.barCodeScanner;
 
-import com.appinionbd.abc.camera.GraphicOverlay;
+import com.appinionbd.abc.extraLibrary.camera.GraphicOverlay;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;

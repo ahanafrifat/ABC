@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +18,8 @@ import android.widget.Toast;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
-import com.appinionbd.abc.barCodeScanner.BarCodeScanner;
-import com.appinionbd.abc.imageLibrary.GlideApp;
+import com.appinionbd.abc.extraLibrary.barCodeScanner.BarCodeScanner;
+import com.appinionbd.abc.extraLibrary.imageLibrary.GlideApp;
 import com.appinionbd.abc.interfaces.trackInterface.ITrackPatient;
 import com.appinionbd.abc.model.dataHolder.UserInfo;
 import com.appinionbd.abc.networking.trackPatient.ApiTrackPatient;

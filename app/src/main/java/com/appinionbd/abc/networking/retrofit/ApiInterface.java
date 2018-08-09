@@ -1,5 +1,6 @@
 package com.appinionbd.abc.networking.retrofit;
 
+import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.model.dataHolder.PatientTrackModel;
 import com.appinionbd.abc.model.dataModel.APIAuth;
 import com.appinionbd.abc.model.dataModel.LoginAuth;
@@ -51,7 +52,7 @@ public interface ApiInterface {
     Call<ResponseTask> responseTaskCall(@Header("token") String token,
                                         @Body PatientWithDate patientWithDate);
 
-    @Headers({"Content-Type: application/json"})
+    @Headers({"Content-Type: application/json."})
     @POST("/abcApp_api/api/task/add_monitors_patient")
     Call<ResponseModel> patientTrackModelCall(@Header("token") String token,
                                                   @Body PatientTrackModel patientTrackModel);
@@ -60,11 +61,13 @@ public interface ApiInterface {
     @GET("/abcApp_api/api/task/add_monitors_patient_list")
     Call<Monitor> trackListCall(@Header("token") String token);
 
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+
     @POST("/abcApp_api/api/app_auth/signup")
     Call<ResponseModel> signUpCall(@Header("Authorization") String authorization ,
                                    @Query("user_name") String userName ,
                                    @Query("user_email") String email ,
                                    @Query("password") String password);
+
+
 
 }

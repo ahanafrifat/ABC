@@ -14,11 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appinionbd.abc.R;
+import com.appinionbd.abc.extraLibrary.imageLibrary.GlideApp;
 import com.appinionbd.abc.model.dataHolder.UserInfo;
 import com.appinionbd.abc.model.dataModel.User;
 import com.appinionbd.abc.presenter.HomePresenter;
+import com.appinionbd.abc.view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity;
 import com.appinionbd.abc.view.home.fragment.HomeFragment;
 import com.appinionbd.abc.view.home.fragment.HomeMonitorFragment;
 import com.appinionbd.abc.view.home.fragment.MyInfoFragment;
@@ -41,6 +45,10 @@ public class HomeActivity extends AppCompatActivity
     final int HOME_FRAGMENT_FOR_Monitor = 11;
 
     private String choose;
+
+    private ImageView imageViewProfile;
+    private TextView textViewHomeUserName;
+    private TextView textViewHomeUserId;
 
     private HomePresenter homePresenter;
 
@@ -79,6 +87,18 @@ public class HomeActivity extends AppCompatActivity
             startFragment(HOME_FRAGMENT_FOR_PATIENT);
         else if(choose.equals("monitor"))
             startFragment(HOME_FRAGMENT_FOR_Monitor);
+
+        View view = navigationView.getHeaderView(0);
+        imageViewProfile = view.findViewById(R.id.imageView_profile);
+        textViewHomeUserName = view.findViewById(R.id.textView_home_user_name);
+        textViewHomeUserId = view.findViewById(R.id.textView_home_user_id);
+        try(Realm realm = Realm.getDefaultInstance()){
+            User user = realm.where(User.class).findFirst();
+            textViewHomeUserName.setText("Name : " + user.getUserName());
+            textViewHomeUserId.setText(  "ID : " + user.getUserId());
+        }
+        GlideApp.with(this).load(R.drawable.profile_1).circleCrop().into(imageViewProfile);
+
     }
 
     @Override
@@ -134,6 +154,9 @@ public class HomeActivity extends AppCompatActivity
         else if (id == R.id.nav_track_patient) {
             startPatientCodeActivity();
         }
+        else if (id == R.id.nav_choose_patient_or_monitor){
+            startChoosePatientOrMonitorActivity();
+        }
 
         else if (id == R.id.nav_change_password) {
 
@@ -150,6 +173,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     private void startFragment(int fragmentCheck) {
@@ -192,6 +216,10 @@ public class HomeActivity extends AppCompatActivity
 
     private void startPatientCodeActivity() {
         Intent intent = new Intent(this , PatientCodeActivity.class);
+        startActivity(intent);
+    }
+    private void startChoosePatientOrMonitorActivity() {
+        Intent intent = new Intent(this , ChoosePatientOrMonitorActivity.class);
         startActivity(intent);
     }
 }

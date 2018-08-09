@@ -35,16 +35,19 @@ public class ApiSignUp {
                     APIAuth apiAuth = response.body();
                     if(apiAuth != null && apiAuth.getStatus() == 200 && !apiAuth.getAuthorization().isEmpty()){
                         gotoSignUp(apiAuth.getAuthorization() , name , email , password , iCreate);
+                        AppUtil.log("ApiSignUp", "getAuthLogin : " + apiAuth.getAuthorization());
                     }
                 }
-                else
+                else {
                     iCreate.error("Auth error : " + response.code());
+                    AppUtil.log("ApiSignUp", "getAuthLogin not done Error : " + response.code());
+                }
             }
 
             @Override
             public void onFailure(Call<APIAuth> call, Throwable t) {
                 iCreate.error("Auth network error : " + t.getMessage());
-                AppUtil.log("LoginAuthentication" , "apiAuthentication Error : " + t.getMessage());
+                AppUtil.log("ApiSignUp", "getAuthLogin onFailure : " + t.getMessage());
             }
         });
     }
@@ -56,14 +59,18 @@ public class ApiSignUp {
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 if(response.isSuccessful() && response.code() == 200){
                     iCreate.successful("Account Created !");
+                    AppUtil.log("ApiSignUp", "gotoSignUp : " + response.code());
                 }
-                else
+                else {
                     iCreate.noNewInfo("Already exist ! : " + response.code());
+                    AppUtil.log("ApiSignUp", "gotoSignUp error : " + response.code() + " Name : " + name + " email : " + email + " Password : " + password);
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 iCreate.connectionProblem("Connection error ! : " + t.getMessage());
+                AppUtil.log("ApiSignUp", "gotoSignUp onFailure error : " + t.getMessage());
             }
         });
     }
