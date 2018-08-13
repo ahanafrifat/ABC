@@ -37,16 +37,18 @@ public class ApiTask {
         call.enqueue(new Callback<ResponseTask>() {
             @Override
             public void onResponse(Call<ResponseTask> call, Response<ResponseTask> response) {
-                if(response.code() == 200){
+                if(response.code() == 200) {
 
                     ResponseTask responseTask = response.body();
+
+                    if(responseTask.getTaskCategory() != null){
 
                     List<TaskCategory> taskCategories = new ArrayList<>();
                     List<AlarmModel> alarmModels = new ArrayList<>();
 
-                    try(Realm realm = Realm.getDefaultInstance()){
+                    try (Realm realm = Realm.getDefaultInstance()) {
 
-                        for(TaskCategory category: responseTask.getTaskCategory()){
+                        for (TaskCategory category : responseTask.getTaskCategory()) {
 
                             TaskCategory taskCategory = new TaskCategory();
                             taskCategory.setId(category.getId());
@@ -61,24 +63,23 @@ public class ApiTask {
                             taskCategory.setTaskStatus(category.getTaskStatus());
                             taskCategory.setCompletDate(category.getCompletDate());
                             taskCategory.setTaskCategory(category.getTaskCategory());
-                            taskCategory.setReminderTime(category.getReminderTime()+ " " +category.getStartDate());
+                            taskCategory.setReminderTime(category.getReminderTime() + " " + category.getStartDate());
 
                             taskCategories.add(taskCategory);
 
                             AlarmModel alarmModel = new AlarmModel();
                             alarmModel.setAlarmId(category.getId());
-                            alarmModel.setTime(category.getReminderTime()+ " " +category.getStartDate());
+                            alarmModel.setTime(category.getReminderTime() + " " + category.getStartDate());
 
                             AlarmModel relamAlarmModel = realm.where(AlarmModel.class)
-                                    .equalTo("alarmId" , category.getId())
-                                    .equalTo("state" , "no")
+                                    .equalTo("alarmId", category.getId())
+                                    .equalTo("state", "no")
                                     .or()
-                                    .equalTo("state" , "yes")
+                                    .equalTo("state", "yes")
                                     .findFirst();
-                            if(relamAlarmModel == null){
+                            if (relamAlarmModel == null) {
                                 alarmModel.setState("no");
-                            }
-                            else
+                            } else
                                 alarmModel.setState("yes");
 
                             alarmModels.add(alarmModel);
@@ -91,6 +92,11 @@ public class ApiTask {
                         }
                     }
                     iHomeFragmentInterface.successful(taskCategories);
+
+                }
+                else {
+                        iHomeFragmentInterface.noContent("There is No Content ! ");
+                    }
                 }
                 else if(response.code() == 401){
                     iHomeFragmentInterface.unAuthorized("Un Authorized");

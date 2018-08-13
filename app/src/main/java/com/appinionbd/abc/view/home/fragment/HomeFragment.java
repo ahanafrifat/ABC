@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
@@ -45,6 +46,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment implements IHome.View {
     private CardView cardViewHomeCalender;
     private CardView cardViewCreateTask;
     private TextView textViewDateHome;
+    private LinearLayout linearLayoutHomeEmptyContent;
 
     private DatePickerDialog.OnDateSetListener onDateSetListenerHome;
     private Calendar calendar = Calendar.getInstance();
@@ -101,6 +105,7 @@ public class HomeFragment extends Fragment implements IHome.View {
         alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         recyclerViewHome = getActivity().findViewById(R.id.recyclerView_home);
+        linearLayoutHomeEmptyContent = getActivity().findViewById(R.id.linearLayout_home_empty_content);
         cardViewCreateTask = getActivity().findViewById(R.id.cardView_create_task);
         cardViewHomeCalender = getActivity().findViewById(R.id.cardView_home_calender);
         textViewDateHome = getActivity().findViewById(R.id.textView_date_home);
@@ -170,11 +175,12 @@ public class HomeFragment extends Fragment implements IHome.View {
             if (taskCategories.size() > 0) {
 
                 recyclerViewHome.setVisibility(View.VISIBLE);
+                linearLayoutHomeEmptyContent.setVisibility(View.GONE);
 
                 RecyclerAdapterHome recyclerAdapterHome = new RecyclerAdapterHome(taskCategories, new ITaskSelection() {
                     @Override
                     public void gotoTask(TaskCategory taskCategory) {
-
+                        gotoTaskActivity();
                     }
 
                     @Override
@@ -193,10 +199,22 @@ public class HomeFragment extends Fragment implements IHome.View {
                 recyclerAdapterHome.notifyDataSetChanged();
             } else {
                 recyclerViewHome.setVisibility(View.GONE);
+                linearLayoutHomeEmptyContent.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             AppUtil.log("HomeFragment", e.getMessage());
         }
+    }
+
+    private void gotoTaskActivity() {
+
+    }
+
+    @Override
+    public void taskListEmpty(String message) {
+        Toasty.warning(getActivity() , message , Toast.LENGTH_LONG , true).show();
+        recyclerViewHome.setVisibility(View.GONE);
+        linearLayoutHomeEmptyContent.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.appinionbd.abc.model.dataHolder.PatientTrackModel;
 import com.appinionbd.abc.model.dataModel.APIAuth;
 import com.appinionbd.abc.model.dataModel.LoginAuth;
 import com.appinionbd.abc.model.dataModel.Monitor;
+import com.appinionbd.abc.model.dataModel.PatientHistory;
 import com.appinionbd.abc.model.dataModel.PatientWithDate;
 import com.appinionbd.abc.model.dataModel.ResponseModel;
 import com.appinionbd.abc.model.dataModel.ResponseTask;
@@ -19,6 +20,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -58,7 +60,7 @@ public interface ApiInterface {
                                                   @Body PatientTrackModel patientTrackModel);
 
     @Headers({"Content-Type: application/json"})
-    @GET("/abcApp_api/api/task/add_monitors_patient_list")
+    @GET("/abcApp_api/api/task/monitor_patient_list")
     Call<Monitor> trackListCall(@Header("token") String token);
 
 
@@ -69,5 +71,8 @@ public interface ApiInterface {
                                    @Query("password") String password);
 
 
-
+    @Headers({"Content-Type: application/json"})
+    @GET("/abcApp_api/api/task/patient_task_list/{id}")
+    Call<PatientHistory> patientHistoryCall(@Header("token") String token,
+                                            @Path("id") String patient_id);
 }

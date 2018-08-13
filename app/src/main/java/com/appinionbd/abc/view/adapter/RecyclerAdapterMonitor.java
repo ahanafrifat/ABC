@@ -61,7 +61,7 @@ public class RecyclerAdapterMonitor extends RecyclerView.Adapter<RecyclerAdapter
             linearLayoutMonitorPatient = itemView.findViewById(R.id.linearLayout_monitor_patient);
 
             linearLayoutMonitorPatient.setOnClickListener(v -> {
-                iPatientSelection.selectedPatient();
+                iPatientSelection.selectedPatient(monitorsPatientLists.get(getLayoutPosition()).getUserId());
             });
         }
     }

@@ -18,20 +18,13 @@ import android.widget.Toast;
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.interfaces.presenterInterface.IMonitorHome;
 import com.appinionbd.abc.interfaces.recyclerAdapterMonitorHomeInterface.IPatientSelection;
-import com.appinionbd.abc.interfaces.trackListInterface.ITrackList;
-import com.appinionbd.abc.model.dataHolder.UserInfo;
 import com.appinionbd.abc.model.dataModel.Monitor;
 import com.appinionbd.abc.model.dataModel.MonitorsPatientList;
-import com.appinionbd.abc.networking.retrofit.ApiClient;
-import com.appinionbd.abc.networking.trackList.ApiTrackList;
 import com.appinionbd.abc.presenter.MonitorPresenter;
 import com.appinionbd.abc.view.PatientInfo.PatientInfoActivity;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterMonitor;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,38 +63,38 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
         recyclerViewMonitor.setLayoutManager(layoutManager);
         recyclerViewMonitor.setHasFixedSize(true);
 
-        String token;
-        try(Realm realm = Realm.getDefaultInstance()){
-            UserInfo userInfo = realm.where(UserInfo.class).findFirst();
-            token = userInfo.getToken();
-        }
-
-        ApiTrackList.getApiTrackList().setApiTrackList(token, new ITrackList() {
-            @Override
-            public void successful(Monitor monitor) {
-                showTrackList(monitor);
-            }
-
-            @Override
-            public void error() {
-
-            }
-
-            @Override
-            public void networkFailed() {
-
-            }
-        });
+        monitorHomePresenter.getMonitorList();
 
     }
 
-    private void showTrackList(Monitor monitor) {
+
+//    private void showTrackList(Monitor monitor) {
+//        if(monitor.getMonitorsPatientList().size() > 0) {
+//
+//            RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
+//                @Override
+//                public void selectedPatient() {
+//                    patientSelected();
+//                }
+//            });
+//
+//            recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
+//            recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
+//            recyclerAdapterMonitor.notifyDataSetChanged();
+//        }
+//        else
+//            Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
+//    }
+
+
+    @Override
+    public void showTrackList(Monitor monitor) {
         if(monitor.getMonitorsPatientList().size() > 0) {
 
             RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
                 @Override
-                public void selectedPatient() {
-                    patientSelected();
+                public void selectedPatient(String userId) {
+                    patientSelected(userId);
                 }
             });
 
@@ -113,8 +106,9 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
             Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
     }
 
-    private void patientSelected() {
+    private void patientSelected(String patientId) {
         Intent intent = new Intent(getActivity() , PatientInfoActivity.class);
+        intent.putExtra("patient_id" , patientId);
         startActivity(intent);
     }
 }

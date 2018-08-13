@@ -67,6 +67,11 @@ public class HomePresenter  implements IHome.Presenter{
             }
 
             @Override
+            public void noContent(String message) {
+                view.taskListEmpty(message);
+            }
+
+            @Override
             public void connectionProblem(String message) {
 
             }

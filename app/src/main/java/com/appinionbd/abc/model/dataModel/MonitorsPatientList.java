@@ -29,20 +29,9 @@ public class MonitorsPatientList {
     @SerializedName("user_ref_code")
     @Expose
     private String userRefCode;
-
-    public MonitorsPatientList() {
-    }
-
-    public MonitorsPatientList(String userId, String userName, String userEmail, String dob, String height, String weight, String gender, String userRefCode) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.dob = dob;
-        this.height = height;
-        this.weight = weight;
-        this.gender = gender;
-        this.userRefCode = userRefCode;
-    }
+    @SerializedName("monitor_patient_rel_id")
+    @Expose
+    private String monitorPatientRelId;
 
     public String getUserId() {
         return userId;
@@ -106,6 +95,14 @@ public class MonitorsPatientList {
 
     public void setUserRefCode(String userRefCode) {
         this.userRefCode = userRefCode;
+    }
+
+    public String getMonitorPatientRelId() {
+        return monitorPatientRelId;
+    }
+
+    public void setMonitorPatientRelId(String monitorPatientRelId) {
+        this.monitorPatientRelId = monitorPatientRelId;
     }
 
 }

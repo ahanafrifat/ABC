@@ -9,5 +9,6 @@ public interface IHomeFragmentInterface {
     void noNewInfo(String message);
     void unAuthorized(String message);
     void error(String message);
+    void noContent(String message);
     void connectionProblem(String message);
 }

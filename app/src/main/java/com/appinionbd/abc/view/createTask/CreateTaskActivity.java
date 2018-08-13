@@ -154,7 +154,7 @@ public class CreateTaskActivity extends AppCompatActivity implements ICreateTask
                 , editTextNoOfDays.getText().toString()
                 , convertDate(textViewCreateTaskDate.getText().toString().trim())
                 , reminderList
-                , spinnerCreateTask.getSelectedItemPosition()));
+                , spinnerCreateTask.getSelectedItemPosition() + 1));
 
     }
 
