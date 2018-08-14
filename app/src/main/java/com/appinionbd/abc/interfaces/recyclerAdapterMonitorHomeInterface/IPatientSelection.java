@@ -1,5 +1,7 @@
 package com.appinionbd.abc.interfaces.recyclerAdapterMonitorHomeInterface;
 
+import com.appinionbd.abc.model.dataModel.MonitorsPatientList;
+
 public interface IPatientSelection {
-    void selectedPatient(String userId);
+    void selectedPatient(MonitorsPatientList monitorsPatientList);
 }

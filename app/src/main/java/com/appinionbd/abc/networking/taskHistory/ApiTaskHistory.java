@@ -1,6 +1,7 @@
 package com.appinionbd.abc.networking.taskHistory;
 
 
+import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.interfaces.taskInfoInterface.ITaskAndReminderInterface;
 import com.appinionbd.abc.model.dataModel.PatientHistory;
 import com.appinionbd.abc.model.dataModel.PatientWiseTaskList;
@@ -10,6 +11,7 @@ import com.appinionbd.abc.networking.retrofit.ApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +40,9 @@ public class ApiTaskHistory {
             public void onResponse(Call<PatientHistory> call, Response<PatientHistory> response) {
                 if(response.code() == 200){
                     PatientHistory patientHistory = response.body();
+
+                    AppUtil.log("ApiTaskHistory" , "PatientWiseTaskList size : " + patientHistory.getPatientWiseTaskList().size());
+
                     if(patientHistory.getPatientWiseTaskList() != null){
                         List<PatientWiseTaskList> patientWiseTaskLists = new ArrayList<>();
 
@@ -57,6 +62,8 @@ public class ApiTaskHistory {
 
                             RealmList<ReminderList> reminderLists = new RealmList<>();
 
+                            AppUtil.log("ApiTaskHistory" , "reminderList size : " + patientWiseTaskList.getReminderList().size());
+
                             for(ReminderList reminderList : patientWiseTaskList.getReminderList()){
 
                                 ReminderList saveReminderList = new ReminderList();
@@ -67,15 +74,19 @@ public class ApiTaskHistory {
                                 saveReminderList.setStatus(reminderList.getStatus());
 
                                 reminderLists.add(saveReminderList);
+
                             }
 
                             savePatientWiseTaskList.setReminderList(reminderLists);
 
 
                             patientWiseTaskLists.add(savePatientWiseTaskList);
+
                         }
 
-
+                        try(Realm realm = Realm.getDefaultInstance()){
+                            realm.executeTransaction(realm1 -> realm1.insertOrUpdate(patientWiseTaskLists));
+                        }
                         iTaskAndReminderInterface.patientTaskList(patientWiseTaskLists);
                     }
                     else{

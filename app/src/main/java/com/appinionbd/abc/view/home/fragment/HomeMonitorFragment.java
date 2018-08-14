@@ -68,33 +68,14 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
     }
 
 
-//    private void showTrackList(Monitor monitor) {
-//        if(monitor.getMonitorsPatientList().size() > 0) {
-//
-//            RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
-//                @Override
-//                public void selectedPatient() {
-//                    patientSelected();
-//                }
-//            });
-//
-//            recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
-//            recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
-//            recyclerAdapterMonitor.notifyDataSetChanged();
-//        }
-//        else
-//            Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
-//    }
-
-
     @Override
     public void showTrackList(Monitor monitor) {
         if(monitor.getMonitorsPatientList().size() > 0) {
 
             RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
                 @Override
-                public void selectedPatient(String userId) {
-                    patientSelected(userId);
+                public void selectedPatient(MonitorsPatientList monitorsPatientList) {
+                    patientSelected(monitorsPatientList);
                 }
             });
 
@@ -106,9 +87,15 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
             Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
     }
 
-    private void patientSelected(String patientId) {
+    private void patientSelected(MonitorsPatientList monitorsPatientList) {
         Intent intent = new Intent(getActivity() , PatientInfoActivity.class);
-        intent.putExtra("patient_id" , patientId);
+        intent.putExtra("patient_id" , monitorsPatientList.getUserId());
+        intent.putExtra("patient_name" , monitorsPatientList.getUserName());
+        intent.putExtra("patient_email" , monitorsPatientList.getUserEmail());
+        intent.putExtra("patient_dob" , monitorsPatientList.getDob());
+        intent.putExtra("patient_height" , monitorsPatientList.getHeight());
+        intent.putExtra("patient_weight" , monitorsPatientList.getWeight());
+        intent.putExtra("patient_gender" , monitorsPatientList.getGender());
         startActivity(intent);
     }
 }

@@ -41,6 +41,7 @@
                             android:text="Name" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -59,6 +60,7 @@
                             android:text="E-mail" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_email"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -77,6 +79,7 @@
                             android:text="Date Of Birth" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_dob"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -95,6 +98,7 @@
                             android:text="Height" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_height"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -113,6 +117,7 @@
                             android:text="Weight" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_weight"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -131,6 +136,7 @@
                             android:text="Gender" />
 
                         <TextView
+                            android:id="@+id/textView_patient_info_gender"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"

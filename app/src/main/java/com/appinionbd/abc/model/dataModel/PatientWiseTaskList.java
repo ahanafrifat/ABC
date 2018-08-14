@@ -5,9 +5,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class PatientWiseTaskList {
+public class PatientWiseTaskList extends RealmObject {
 
     @PrimaryKey
     @SerializedName("task_id")

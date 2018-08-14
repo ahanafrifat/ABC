@@ -9,8 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appinionbd.abc.R;
+import com.appinionbd.abc.model.dataModel.ReminderList;
+
+import java.util.List;
 
 public class RecyclerAdapterPatientHistoryReminder extends RecyclerView.Adapter<RecyclerAdapterPatientHistoryReminder.MyPatientHistoryReminderViewHolder>{
+
+    private List<ReminderList> reminderLists;
+
+    public RecyclerAdapterPatientHistoryReminder(List<ReminderList> reminderLists) {
+        this.reminderLists = reminderLists;
+    }
 
     @NonNull
     @Override
@@ -22,18 +31,22 @@ public class RecyclerAdapterPatientHistoryReminder extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(@NonNull MyPatientHistoryReminderViewHolder holder, int position) {
+        holder.textViewPatientHistoryReminderName.setText(reminderLists.get(position).getReminderId());
+        holder.textViewPatientHistoryReminderTime.setText(reminderLists.get(position).getReminderTime() + " " + reminderLists.get(position).getReminderDate());
+
+        holder.textViewPatientHistoryReminderStatus.setText(reminderLists.get(position).getStatus());
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return reminderLists.size();
     }
 
     class MyPatientHistoryReminderViewHolder extends RecyclerView.ViewHolder{
 
 
-        TextView textView_patient_history_reminder_name;
+        TextView textViewPatientHistoryReminderName;
         TextView textViewPatientHistoryReminderTime;
         TextView textViewPatientHistoryReminderStatus;
         ImageView imageViewPatientHistoryReminderType;
@@ -41,10 +54,20 @@ public class RecyclerAdapterPatientHistoryReminder extends RecyclerView.Adapter<
         public MyPatientHistoryReminderViewHolder(View itemView) {
             super(itemView);
 
-            textView_patient_history_reminder_name = itemView.findViewById(R.id.textView_patient_history_reminder_name);
+            textViewPatientHistoryReminderName = itemView.findViewById(R.id.textView_patient_history_reminder_name);
             textViewPatientHistoryReminderTime = itemView.findViewById(R.id.textView_patient_history_reminder_time);
             textViewPatientHistoryReminderStatus = itemView.findViewById(R.id.textView_patient_history_reminder_status);
             imageViewPatientHistoryReminderType = itemView.findViewById(R.id.imageView_patient_history_reminder_type);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

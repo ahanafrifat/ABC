@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.interfaces.presenterInterface.ITaskInfo;
@@ -15,7 +16,10 @@ import com.appinionbd.abc.model.dataModel.ReminderList;
 import com.appinionbd.abc.presenter.TaskInfoPresenter;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterPatientHistoryReminder;
 
-import io.realm.RealmList;
+import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import io.realm.Realm;
 
 public class TaskInfoActivity extends AppCompatActivity implements ITaskInfo.View {
 
@@ -33,6 +37,7 @@ public class TaskInfoActivity extends AppCompatActivity implements ITaskInfo.Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info);
+        Realm.init(this);
     }
 
     @Override
@@ -42,33 +47,60 @@ public class TaskInfoActivity extends AppCompatActivity implements ITaskInfo.Vie
         taskInfoPresenter = new TaskInfoPresenter(this);
 
         Intent intent = getIntent();
-        taskId = intent.getStringExtra("taskId");
+        taskId = intent.getStringExtra("task_id");
 
         imageViewTaskType = findViewById(R.id.imageView_task_type);
         textViewTaskTitle = findViewById(R.id.textView_task_title);
         textViewTaskTotalReminder = findViewById(R.id.textView_task_total_reminder);
         buttonTaskDelete = findViewById(R.id.button_task_delete);
 
-        recyclerViewTaskReminder = findViewById(R.id.recyclerView_task_reminder);
+        buttonTaskDelete.setOnClickListener(v -> taskInfoPresenter.deleteTask(taskId));
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerViewTaskReminder.setLayoutManager(layoutManager);
-        recyclerViewTaskReminder.setHasFixedSize(true);
+        recyclerViewTaskReminder = findViewById(R.id.recyclerView_task_reminder);
 
         taskInfoPresenter.reminderList(taskId);
 
     }
 
     @Override
-    public void showReminderList(RealmList<ReminderList> reminderList, String taskName, String taskCategory) {
+    public void showReminderList(List<ReminderList> reminderLists, String taskTitle, String category) {
 
-        textViewTaskTitle.setText(taskName);
-        textViewTaskTotalReminder.setText("Total reminder : " + reminderList.size());
+        textViewTaskTitle.setText(taskTitle);
+//        textViewTaskTotalReminder.setText("Total reminder : " + reminderList.size());
 
-        RecyclerAdapterPatientHistoryReminder recyclerAdapterPatientHistoryReminder = new RecyclerAdapterPatientHistoryReminder();
+        if(reminderLists.size() > 0){
 
-        recyclerViewTaskReminder.setAdapter(recyclerAdapterPatientHistoryReminder);
-        recyclerAdapterPatientHistoryReminder.notifyDataSetChanged();
+            textViewTaskTotalReminder.setText("Total reminder : " + reminderLists.size());
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerViewTaskReminder.setLayoutManager(layoutManager);
+            recyclerViewTaskReminder.setHasFixedSize(true);
+
+            RecyclerAdapterPatientHistoryReminder recyclerAdapterPatientHistoryReminder = new RecyclerAdapterPatientHistoryReminder(reminderLists);
+
+            recyclerViewTaskReminder.setAdapter(recyclerAdapterPatientHistoryReminder);
+            recyclerAdapterPatientHistoryReminder.notifyDataSetChanged();
+        }
+        else{
+            textViewTaskTotalReminder.setText("Total reminder : 0");
+        }
+
+    }
+
+    @Override
+    public void confirmDeleteTask(String message) {
+        Toasty.success(this , message , Toast.LENGTH_LONG , true).show();
+        onBackPressed();
+    }
+
+    @Override
+    public void deleteError(String message) {
+        Toasty.error(this , message , Toast.LENGTH_LONG , true).show();
+    }
+
+    @Override
+    public void connectionError(String message) {
+        Toasty.error(this , message , Toast.LENGTH_LONG , true).show();
     }
 }
 

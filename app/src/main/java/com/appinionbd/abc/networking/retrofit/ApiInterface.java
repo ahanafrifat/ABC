@@ -15,6 +15,7 @@ import com.appinionbd.abc.model.dataModel.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -75,4 +76,13 @@ public interface ApiInterface {
     @GET("/abcApp_api/api/task/patient_task_list/{id}")
     Call<PatientHistory> patientHistoryCall(@Header("token") String token,
                                             @Path("id") String patient_id);
+
+    @DELETE("/abcApp_api/api/task/delete_task/{taskId}")
+    Call<ResponseModel> deleteTaskCall(@Header("token") String token,
+                                       @Path("taskId") String taskId);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("/abcApp_api/api/task/delete_patient?patient_rel_id={patient_id}")
+    Call<ResponseModel> deletePatientCall(@Query("token") String token,
+                                          @Path("patient_id") String patientId);
 }
