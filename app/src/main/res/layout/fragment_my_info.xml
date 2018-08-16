@@ -97,6 +97,7 @@
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/white"/>
                     <TextView
+                        android:id="@+id/textView_my_info_DOB"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -254,6 +255,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/button_my_info_edit_personal_profile"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:text="Edit"

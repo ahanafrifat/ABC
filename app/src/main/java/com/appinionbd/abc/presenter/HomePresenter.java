@@ -19,6 +19,13 @@ import io.realm.Realm;
 
 public class HomePresenter  implements IHome.Presenter{
     private IHome.View view;
+    private static int STATE_NO = 0;
+    private static int STATE_YES = 1;
+    private static int STATE_DONE = 2;
+
+    private static String STRING_STATE_NO = "0";
+    private static String STRING_STATE_YES = "1";
+    private static String STRING_STATE_DONE = "2";
 
     public HomePresenter() {
     }
@@ -79,63 +86,78 @@ public class HomePresenter  implements IHome.Presenter{
     }
 
     @Override
-    public void checkReminder(String id, ImageView imageViewTime, Button buttonDone) {
+    public void checkReminder(String id, ImageView imageViewTime, Button buttonDone, String taskId) {
 
-        boolean checkAlarm = false;
+        int checkAlarm = 0;
         String tempTime;
 
         try(Realm realm = Realm.getDefaultInstance()){
 
-            AlarmModel alarmModel = realm.where(AlarmModel.class)
-                    .equalTo("alarmId" , id)
+//            AlarmModel alarmModel = realm.where(AlarmModel.class)
+//                    .equalTo("alarmId" , id)
+//                    .findFirst();
+//
+//            if(alarmModel.getState().equals("yes")) {
+//                checkAlarm = true;
+//            }
+//            else if(alarmModel.getState().equals("no")) {
+//                checkAlarm = false;
+//            }
+
+            TaskCategory taskCategory = realm.where(TaskCategory.class)
+                    .equalTo("taskId" , taskId)
+                    .and()
+                    .equalTo("id" , id)
                     .findFirst();
-
-            if(alarmModel.getState().equals("yes")) {
-                checkAlarm = true;
+            if(taskCategory.getReminderStatus().equals(STRING_STATE_NO)){
+                checkAlarm = STATE_NO;
             }
-            else if(alarmModel.getState().equals("no")) {
-                checkAlarm = false;
+            else if(taskCategory.getReminderStatus().equals(STRING_STATE_YES)){
+                checkAlarm = STATE_YES;
+            }
+            else if(taskCategory.getReminderStatus().equals(STRING_STATE_DONE)){
+                checkAlarm = STATE_DONE;
             }
         }
-        if(checkAlarm) {
-            AlarmModel tempAlarmModel = new AlarmModel();
-            try(Realm realm = Realm.getDefaultInstance()) {
-                AlarmModel alarmModel = realm.where(AlarmModel.class)
-                        .equalTo("alarmId" , id)
-                        .findFirst();
-
-                tempAlarmModel.setAlarmId(id);
-                tempAlarmModel.setState("no");
-                tempAlarmModel.setTime(alarmModel.getTime());
-                tempTime = alarmModel.getTime();
-
-                realm.executeTransaction(realm1 -> {
-                    realm1.insertOrUpdate(alarmModel);
-                });
-            }
-            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
-//            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
-        }
-        else if(!checkAlarm) {
-            AlarmModel tempAlarmModel = new AlarmModel();
-            try(Realm realm = Realm.getDefaultInstance()) {
-                AlarmModel alarmModel = realm.where(AlarmModel.class)
-                        .equalTo("alarmId" , id)
-                        .findFirst();
-                tempAlarmModel.setAlarmId(id);
-                tempAlarmModel.setState("yes");
-                tempAlarmModel.setTime(alarmModel.getTime());
-
-                tempTime = alarmModel.getTime();
-
-
-                realm.executeTransaction(realm1 -> {
-                    realm1.insertOrUpdate(tempAlarmModel);
-                });
-            }
-            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
+//        if(checkAlarm == STATE_NO) {
+//            AlarmModel tempAlarmModel = new AlarmModel();
+//            try(Realm realm = Realm.getDefaultInstance()) {
+//                AlarmModel alarmModel = realm.where(AlarmModel.class)
+//                        .equalTo("alarmId" , id)
+//                        .findFirst();
+//
+//                tempAlarmModel.setAlarmId(id);
+//                tempAlarmModel.setState("no");
+//                tempAlarmModel.setTime(alarmModel.getTime());
+//                tempTime = alarmModel.getTime();
+//
+//                realm.executeTransaction(realm1 -> {
+//                    realm1.insertOrUpdate(alarmModel);
+//                });
+//            }
 //            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
-        }
+////            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
+//        }
+//        else if(checkAlarm == STATE_YES) {
+//            AlarmModel tempAlarmModel = new AlarmModel();
+//            try(Realm realm = Realm.getDefaultInstance()) {
+//                AlarmModel alarmModel = realm.where(AlarmModel.class)
+//                        .equalTo("alarmId" , id)
+//                        .findFirst();
+//                tempAlarmModel.setAlarmId(id);
+//                tempAlarmModel.setState("yes");
+//                tempAlarmModel.setTime(alarmModel.getTime());
+//
+//                tempTime = alarmModel.getTime();
+//
+//
+//                realm.executeTransaction(realm1 -> {
+//                    realm1.insertOrUpdate(tempAlarmModel);
+//                });
+//            }
+//            view.notificationAndAlarmON(id ,imageViewTime , buttonDone , tempTime);
+////            view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
+//        }
 
     }
 

@@ -29,15 +29,12 @@ public class PatientInfoActivity extends AppCompatActivity implements IPatientIn
     private String patientWeight;
     private String patientGender;
 
-
-
     private TextView textViewPatientInfoName;
     private TextView textViewPatientInfoEmail;
     private TextView textViewPatientInfoDob;
     private TextView textViewPatientInfoHeight;
     private TextView textViewPatientInfoWeight;
     private TextView textViewPatientInfoGender;
-
 
 
     IPatientInfo.Presenter patientInfoPresenter;

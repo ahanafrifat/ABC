@@ -1,6 +1,7 @@
 package com.appinionbd.abc.view.home.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.appinionbd.abc.extraLibrary.imageLibrary.GlideApp;
 import com.appinionbd.abc.interfaces.presenterInterface.IMyInfo;
 import com.appinionbd.abc.model.dataModel.User;
 import com.appinionbd.abc.presenter.MyInfoPresenter;
+import com.appinionbd.abc.view.personalInformation.PersonalInformationActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -46,7 +49,8 @@ public class MyInfoFragment extends Fragment implements IMyInfo.View{
     TextView textViewMyInfoHeight;
     TextView textViewMyInfoWeight;
     TextView textViewMyInfoGender;
-    TextView textViewMyInfoProfileCreatedDate;
+    TextView textViewMyInfoDOB;
+    Button buttonMyInfoEditPersonalProfile;
 
     private String id;
 
@@ -82,9 +86,19 @@ public class MyInfoFragment extends Fragment implements IMyInfo.View{
         textViewMyInfoHeight = getActivity().findViewById(R.id.textView_my_info_height);
         textViewMyInfoWeight = getActivity().findViewById(R.id.textView_my_info_weight);
         textViewMyInfoGender = getActivity().findViewById(R.id.textView_my_info_gender);
+        textViewMyInfoDOB = getActivity().findViewById(R.id.textView_my_info_DOB);
+        buttonMyInfoEditPersonalProfile =getActivity().findViewById(R.id.button_my_info_edit_personal_profile);
+
+
+        buttonMyInfoEditPersonalProfile.setOnClickListener(v -> gotoPersonalInfoActivity());
 
         myInfoPresenter.dataFromRealm();
 
+    }
+
+    private void gotoPersonalInfoActivity() {
+        Intent intent = new Intent(getActivity() , PersonalInformationActivity.class);
+        startActivity(intent);
     }
 
 
@@ -101,6 +115,7 @@ public class MyInfoFragment extends Fragment implements IMyInfo.View{
         textViewMyInfoHeight.setText(height);
         textViewMyInfoWeight.setText(weight);
         textViewMyInfoGender.setText(gender);
+        textViewMyInfoDOB.setText(dateOfBirth);
 
         Bitmap bitmap = null;
         try {

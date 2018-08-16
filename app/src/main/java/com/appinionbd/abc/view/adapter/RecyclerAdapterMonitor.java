@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class RecyclerAdapterMonitor extends RecyclerView.Adapter<RecyclerAdapter
         TextView textMonitorPaitentName;
         TextView textMonitorPaitentEmail;
         TextView textMonitorPaitentDateOfBirth;
+        ImageView imageViewMonitorPaitentDelete;
         LinearLayout linearLayoutMonitorPatient;
 
         public MyMonitorViewHolder(View itemView) {
@@ -58,11 +60,14 @@ public class RecyclerAdapterMonitor extends RecyclerView.Adapter<RecyclerAdapter
             textMonitorPaitentName = itemView.findViewById(R.id.text_monitor_paitent_name);
             textMonitorPaitentEmail = itemView.findViewById(R.id.text_monitor_paitent_email);
             textMonitorPaitentDateOfBirth = itemView.findViewById(R.id.text_monitor_paitent_date_of_birth);
+            imageViewMonitorPaitentDelete = itemView.findViewById(R.id.imageView_monitor_paitent_delete);
             linearLayoutMonitorPatient = itemView.findViewById(R.id.linearLayout_monitor_patient);
 
             linearLayoutMonitorPatient.setOnClickListener(v -> {
                 iPatientSelection.selectedPatient(monitorsPatientLists.get(getLayoutPosition()));
             });
+
+            imageViewMonitorPaitentDelete.setOnClickListener(v ->iPatientSelection.deletePatient( monitorsPatientLists.get(getLayoutPosition())));
         }
     }
 }

@@ -1,21 +1,17 @@
 package com.appinionbd.abc.presenter;
 
 import com.appinionbd.abc.appUtils.AppUtil;
-import com.appinionbd.abc.interfaces.deleteTaskInterface.IDeleteTaskInterface;
+import com.appinionbd.abc.interfaces.deleteInterface.IDeleteInterface;
 import com.appinionbd.abc.interfaces.presenterInterface.ITaskInfo;
-import com.appinionbd.abc.interfaces.taskInfoInterface.ITaskAndReminderInterface;
 import com.appinionbd.abc.model.dataHolder.UserInfo;
 import com.appinionbd.abc.model.dataModel.PatientWiseTaskList;
 import com.appinionbd.abc.model.dataModel.ReminderList;
-import com.appinionbd.abc.model.dataModel.User;
 import com.appinionbd.abc.networking.DeleteTaskApi.ApiDeleteTask;
-import com.appinionbd.abc.networking.taskHistory.ApiTaskHistory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class TaskInfoPresenter implements ITaskInfo.Presenter{
     private ITaskInfo.View view;
@@ -68,7 +64,7 @@ public class TaskInfoPresenter implements ITaskInfo.Presenter{
             UserInfo userInfo = realm.where(UserInfo.class).findFirst();
             token = userInfo.getToken();
         }
-        ApiDeleteTask.getApiDeleteTask().setApiDeleteTask(token, taskId, new IDeleteTaskInterface() {
+        ApiDeleteTask.getApiDeleteTask().setApiDeleteTask(token, taskId, new IDeleteInterface() {
             @Override
             public void successful(String message) {
                 view.confirmDeleteTask(message);

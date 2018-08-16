@@ -1,6 +1,6 @@
 package com.appinionbd.abc.networking.DeleteTaskApi;
 
-import com.appinionbd.abc.interfaces.deleteTaskInterface.IDeleteTaskInterface;
+import com.appinionbd.abc.interfaces.deleteInterface.IDeleteInterface;
 import com.appinionbd.abc.model.dataModel.ResponseModel;
 import com.appinionbd.abc.networking.retrofit.ApiClient;
 
@@ -20,24 +20,24 @@ public class ApiDeleteTask {
         return apiDeleteTask;
     }
 
-    public static void setApiDeleteTask (String token , String taskId , IDeleteTaskInterface iDeleteTaskInterface){
-        deleteTask(token , taskId , iDeleteTaskInterface);
+    public static void setApiDeleteTask (String token , String taskId , IDeleteInterface iDeleteInterface){
+        deleteTask(token , taskId , iDeleteInterface);
     }
 
-    private static void deleteTask(String token, String taskId, IDeleteTaskInterface iDeleteTaskInterface) {
+    private static void deleteTask(String token, String taskId, IDeleteInterface iDeleteInterface) {
         Call<ResponseModel> call = ApiClient.getApiInterface().deleteTaskCall(token , taskId);
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 if(response.code() == 200)
-                    iDeleteTaskInterface.successful("Delete task Successful : " +taskId);
+                    iDeleteInterface.successful("Delete task Successful : " +taskId);
                 else
-                    iDeleteTaskInterface.error("Server error : " +response.code() + "Message : " + response.message());
+                    iDeleteInterface.error("Server error : " +response.code() + "Message : " + response.message());
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                iDeleteTaskInterface.connectionError("Connection error : " + t.getMessage());
+                iDeleteInterface.connectionError("Connection error : " + t.getMessage());
             }
         });
     }

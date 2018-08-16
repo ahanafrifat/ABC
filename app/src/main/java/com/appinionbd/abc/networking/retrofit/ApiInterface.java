@@ -12,11 +12,14 @@ import com.appinionbd.abc.model.dataModel.ResponseTask;
 import com.appinionbd.abc.model.dataModel.Task;
 import com.appinionbd.abc.model.dataModel.UpdatePersonalInfoBody;
 import com.appinionbd.abc.model.dataModel.User;
+import com.appinionbd.abc.model.uploadDataModel.DeletePatientModel;
+import com.appinionbd.abc.model.uploadDataModel.UpdateReminderModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -81,8 +84,19 @@ public interface ApiInterface {
     Call<ResponseModel> deleteTaskCall(@Header("token") String token,
                                        @Path("taskId") String taskId);
 
+//    @Headers({"Content-Type: application/json"})
+//    @DELETE("/abcApp_api/api/task/delete_patient")
+//    Call<ResponseModel> deletePatientCall(@Header("token") String token,
+//                                          @Body DeletePatientModel deletePatientModel);
+
     @Headers({"Content-Type: application/json"})
-    @DELETE("/abcApp_api/api/task/delete_patient?patient_rel_id={patient_id}")
-    Call<ResponseModel> deletePatientCall(@Query("token") String token,
-                                          @Path("patient_id") String patientId);
+    @HTTP(method = "DELETE" , path = "/abcApp_api/api/task/delete_patient" , hasBody = true)
+    Call<ResponseModel>deletePatientCall(@Header("token") String token,
+                                          @Body DeletePatientModel deletePatientModel);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("/abcApp_api/api/task/reminder_done")
+    Call<ResponseModel>updateReminderCall(@Header("token") String token,
+                                          @Body UpdateReminderModel updateReminderModel);
+
 }

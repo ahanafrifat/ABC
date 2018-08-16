@@ -210,6 +210,7 @@ public class HomeActivity extends AppCompatActivity
                 userInfos.deleteAllFromRealm();
             });
             Intent intent = new Intent(this , SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }

@@ -29,19 +29,16 @@ import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.interfaces.presenterInterface.IHome;
 import com.appinionbd.abc.interfaces.recyclerAdapterHomeInterface.ITaskSelection;
-import com.appinionbd.abc.model.dataHolder.AlarmModel;
 import com.appinionbd.abc.model.dataModel.Patient;
 import com.appinionbd.abc.model.dataModel.TaskCategory;
 import com.appinionbd.abc.presenter.HomePresenter;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterHome;
-import com.appinionbd.abc.view.alarm.AlarmActivity;
 import com.appinionbd.abc.view.alarm.AlarmReceiver;
 import com.appinionbd.abc.view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity;
 import com.appinionbd.abc.view.createTask.CreateTaskActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -184,9 +181,9 @@ public class HomeFragment extends Fragment implements IHome.View {
                     }
 
                     @Override
-                    public void setNotificationAndAlarm(String reminderTime, String id, ImageView imageViewTime, Button buttonDone) {
+                    public void setNotificationAndAlarm(String reminderTime, String id, String taskId, ImageView imageViewTime, Button buttonDone) {
 //                        homePresenter.checkReminder(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
-                        homePresenter.checkReminder(id , imageViewTime , buttonDone);
+                        homePresenter.checkReminder(id , imageViewTime , buttonDone , taskId);
                     }
 
                     @Override

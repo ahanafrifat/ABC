@@ -23,8 +23,11 @@ import com.appinionbd.abc.model.dataModel.MonitorsPatientList;
 import com.appinionbd.abc.presenter.MonitorPresenter;
 import com.appinionbd.abc.view.PatientInfo.PatientInfoActivity;
 import com.appinionbd.abc.view.adapter.RecyclerAdapterMonitor;
+import com.appinionbd.abc.view.home.HomeActivity;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +80,11 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
                 public void selectedPatient(MonitorsPatientList monitorsPatientList) {
                     patientSelected(monitorsPatientList);
                 }
+
+                @Override
+                public void deletePatient(MonitorsPatientList monitorsPatientList) {
+                    monitorHomePresenter.deletePatientParmanently(monitorsPatientList);
+                }
             });
 
             recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
@@ -97,5 +105,24 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
         intent.putExtra("patient_weight" , monitorsPatientList.getWeight());
         intent.putExtra("patient_gender" , monitorsPatientList.getGender());
         startActivity(intent);
+    }
+
+    @Override
+    public void successfullyDeletedPatient(String message) {
+        Toasty.success(getActivity() , message ,Toast.LENGTH_LONG , true).show();
+        Intent intent = new Intent(getActivity() , HomeActivity.class);
+        intent.putExtra("patientOrMonitor" , "monitor");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
+    @Override
+    public void errorInDeletePatient(String message) {
+        Toasty.error(getActivity() , message ,Toast.LENGTH_LONG , true).show();
+    }
+
+    @Override
+    public void connectionErrorInDeletePatient(String message) {
+        Toasty.info(getActivity() , message ,Toast.LENGTH_LONG , true).show();
     }
 }

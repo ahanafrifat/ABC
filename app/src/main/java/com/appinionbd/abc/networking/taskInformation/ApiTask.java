@@ -53,6 +53,7 @@ public class ApiTask {
                             TaskCategory taskCategory = new TaskCategory();
                             taskCategory.setId(category.getId());
                             taskCategory.setTaskName(category.getTaskName());
+                            taskCategory.setTaskId(category.getTaskId());
                             taskCategory.setTblTaskCategorySerId(category.getTblTaskCategorySerId());
                             taskCategory.setStartDate(category.getStartDate());
                             taskCategory.setReminder(category.getReminder());
@@ -67,26 +68,26 @@ public class ApiTask {
 
                             taskCategories.add(taskCategory);
 
-                            AlarmModel alarmModel = new AlarmModel();
-                            alarmModel.setAlarmId(category.getId());
-                            alarmModel.setTime(category.getReminderTime() + " " + category.getStartDate());
-
-                            AlarmModel relamAlarmModel = realm.where(AlarmModel.class)
-                                    .equalTo("alarmId", category.getId())
-                                    .equalTo("state", "no")
-                                    .or()
-                                    .equalTo("state", "yes")
-                                    .findFirst();
-                            if (relamAlarmModel == null) {
-                                alarmModel.setState("no");
-                            } else
-                                alarmModel.setState("yes");
-
-                            alarmModels.add(alarmModel);
+//                            AlarmModel alarmModel = new AlarmModel();
+//                            alarmModel.setAlarmId(category.getId());
+//                            alarmModel.setTime(category.getReminderTime() + " " + category.getStartDate());
+//
+//                            AlarmModel relamAlarmModel = realm.where(AlarmModel.class)
+//                                    .equalTo("alarmId", category.getId())
+//                                    .equalTo("state", "no")
+//                                    .or()
+//                                    .equalTo("state", "yes")
+//                                    .findFirst();
+//                            if (relamAlarmModel == null) {
+//                                alarmModel.setState("no");
+//                            } else
+//                                alarmModel.setState("yes");
+//
+//                            alarmModels.add(alarmModel);
 
                             realm.executeTransaction(realm1 -> {
                                 realm1.insertOrUpdate(taskCategory);
-                                realm1.insertOrUpdate(alarmModel);
+//                                realm1.insertOrUpdate(alarmModel);
                             });
 
                         }

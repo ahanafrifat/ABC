@@ -41,7 +41,7 @@ public class ApiTaskHistory {
                 if(response.code() == 200){
                     PatientHistory patientHistory = response.body();
 
-                    AppUtil.log("ApiTaskHistory" , "PatientWiseTaskList size : " + patientHistory.getPatientWiseTaskList().size());
+//                    AppUtil.log("ApiTaskHistory" , "PatientWiseTaskList size : " + patientHistory.getPatientWiseTaskList().size());
 
                     if(patientHistory.getPatientWiseTaskList() != null){
                         List<PatientWiseTaskList> patientWiseTaskLists = new ArrayList<>();

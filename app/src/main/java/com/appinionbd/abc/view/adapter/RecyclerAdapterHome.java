@@ -24,6 +24,9 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
 
     List<TaskCategory> taskCategories;
     private ITaskSelection iTaskSelection;
+    private final int STATE_NO = 0 ;
+    private final int STATE_YES = 1 ;
+    private final int STATE_DONE = 2 ;
 
     public RecyclerAdapterHome(List<TaskCategory> taskCategories, ITaskSelection iTaskSelection) {
         this.taskCategories = taskCategories;
@@ -49,18 +52,21 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         holder.textViewName.setText(taskCategories.get(position).getTaskName());
         holder.textViewTime.setText(taskCategories.get(position).getReminderTime());
 
-        boolean state;
+        int state;
 
         state = checkAlarm(taskCategories.get(position).getId());
-        if (state)
+        if (state == STATE_YES)
             holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-        else if(!state)
+        else if(state == STATE_NO)
             holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
+        else if(state == STATE_DONE)
+            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
 
 
         holder.imageViewTime.setOnClickListener(v -> iTaskSelection.setNotificationAndAlarm(
                 taskCategories.get(position).getReminderTime()
                 , taskCategories.get(position).getId()
+                ,taskCategories.get(position).getTaskId()
                 , holder.imageViewTime
                 , holder.buttonDone));
 
@@ -95,16 +101,18 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         }
     }
 
-    private boolean checkAlarm(String id) {
-        boolean state = false;
+    private int checkAlarm(String id) {
+        int state = 0 ;
         try(Realm realm = Realm.getDefaultInstance()){
             AlarmModel alarmModel = realm.where(AlarmModel.class)
                     .equalTo("alarmId" , id)
                     .findFirst();
-            if(alarmModel.getState().equals("yes"))
-                state = true;
-            else if( alarmModel.getState().equals("no") )
-                state = false;
+            if(alarmModel.getState().equals("0"))
+                state = STATE_NO;
+            else if( alarmModel.getState().equals("1") )
+                state = STATE_YES;
+            else if( alarmModel.getState().equals("3") )
+                state = STATE_DONE;
         }
         return state;
     }
