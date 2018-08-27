@@ -1,5 +1,6 @@
 package com.appinionbd.abc.view.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,17 +36,26 @@ public class RecyclerAdapterPatientHistoryTask extends RecyclerView.Adapter<Recy
 
     @Override
     public void onBindViewHolder(@NonNull MyPatientHistoryTaskViewHolder holder, int position) {
-        holder.textViewPatientHistoryTaskName.setText(patientWiseTaskLists.get(position).getTaskId());
+        holder.textViewPatientHistoryTaskName.setText(patientWiseTaskLists.get(position).getTaskName());
 
-        switch (patientWiseTaskLists.get(position).getStatus()) {
-            case "1":
+        if(patientWiseTaskLists.get(position).getStatus().equals("1")) {
+            holder.textViewPatientHistoryTaskStatus.setText("Not Done");
+            holder.textViewPatientHistoryTaskStatus.setTextColor(Color.RED);
+        }
+        else {
+            holder.textViewPatientHistoryTaskStatus.setText("Done");
+            holder.textViewPatientHistoryTaskStatus.setTextColor(Color.GREEN);
+        }
+
+        switch (patientWiseTaskLists.get(position).getTaskCategory()) {
+            case "Pill Reminder":
                 holder.imageViewPatientHistoryTaskType.setImageResource(R.drawable.ic_drug);
                 break;
-            case "2":
-                holder.imageViewPatientHistoryTaskType.setImageResource(R.drawable.ic_feeding);
-                break;
-            case "3":
+            case "Exercise":
                 holder.imageViewPatientHistoryTaskType.setImageResource(R.drawable.ic_directions_run_24dp);
+                break;
+            case "Walking":
+                holder.imageViewPatientHistoryTaskType.setImageResource(R.drawable.ic_directions_walk_24dp);
                 break;
         }
 
@@ -60,6 +70,7 @@ public class RecyclerAdapterPatientHistoryTask extends RecyclerView.Adapter<Recy
     class MyPatientHistoryTaskViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewPatientHistoryTaskName;
+        TextView textViewPatientHistoryTaskStatus;
         ImageView imageViewPatientHistoryTaskType;
         LinearLayout linearLayoutPatientHistoryTask;
 
@@ -67,6 +78,7 @@ public class RecyclerAdapterPatientHistoryTask extends RecyclerView.Adapter<Recy
             super(itemView);
 
             textViewPatientHistoryTaskName = itemView.findViewById(R.id.textView_patient_history_task_name);
+            textViewPatientHistoryTaskStatus = itemView.findViewById(R.id.textView_patient_history_task_status);
             imageViewPatientHistoryTaskType = itemView.findViewById(R.id.imageView_patient_history_task_type);
             linearLayoutPatientHistoryTask = itemView.findViewById(R.id.linearLayout_patient_history_task);
 

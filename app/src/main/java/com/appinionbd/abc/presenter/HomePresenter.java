@@ -23,9 +23,9 @@ public class HomePresenter  implements IHome.Presenter{
     private static int STATE_YES = 1;
     private static int STATE_DONE = 2;
 
-    private static String STRING_STATE_NO = "0";
-    private static String STRING_STATE_YES = "1";
-    private static String STRING_STATE_DONE = "2";
+    private String STRING_STATE_NO = "0";
+    private String STRING_STATE_YES = "1";
+    private String STRING_STATE_DONE = "2";
 
     public HomePresenter() {
     }
@@ -93,31 +93,20 @@ public class HomePresenter  implements IHome.Presenter{
 
         try(Realm realm = Realm.getDefaultInstance()){
 
-//            AlarmModel alarmModel = realm.where(AlarmModel.class)
-//                    .equalTo("alarmId" , id)
-//                    .findFirst();
-//
-//            if(alarmModel.getState().equals("yes")) {
-//                checkAlarm = true;
-//            }
-//            else if(alarmModel.getState().equals("no")) {
-//                checkAlarm = false;
-//            }
-
             TaskCategory taskCategory = realm.where(TaskCategory.class)
                     .equalTo("taskId" , taskId)
                     .and()
                     .equalTo("id" , id)
                     .findFirst();
-            if(taskCategory.getReminderStatus().equals(STRING_STATE_NO)){
-                checkAlarm = STATE_NO;
-            }
-            else if(taskCategory.getReminderStatus().equals(STRING_STATE_YES)){
-                checkAlarm = STATE_YES;
-            }
-            else if(taskCategory.getReminderStatus().equals(STRING_STATE_DONE)){
-                checkAlarm = STATE_DONE;
-            }
+//            if(taskCategory.getReminderStatus().equals(STRING_STATE_NO)){
+//                checkAlarm = STATE_NO;
+//            }
+//            else if(taskCategory.getReminderStatus().equals(STRING_STATE_YES)){
+//                checkAlarm = STATE_YES;
+//            }
+//            else if(taskCategory.getReminderStatus().equals(STRING_STATE_DONE)){
+//                checkAlarm = STATE_DONE;
+//            }
         }
 //        if(checkAlarm == STATE_NO) {
 //            AlarmModel tempAlarmModel = new AlarmModel();
@@ -161,17 +150,17 @@ public class HomePresenter  implements IHome.Presenter{
 
     }
 
-    @Override
-    public void taskDone(String id, ImageView imageViewTime, Button buttonDone) {
-        try(Realm realm = Realm.getDefaultInstance()) {
-            AlarmModel alarmModel = realm.where(AlarmModel.class)
-                    .equalTo("alarmId" , id)
-                    .findFirst();
-            alarmModel.setState("no");
-            realm.executeTransaction(realm1 -> {
-                realm1.insertOrUpdate(alarmModel);
-            });
-        }
-        view.notificationAndAlarmOff(id ,imageViewTime , buttonDone);
-    }
+//    @Override
+//    public void taskDone(String id) {
+//        try(Realm realm = Realm.getDefaultInstance()) {
+//            AlarmModel alarmModel = realm.where(AlarmModel.class)
+//                    .equalTo("alarmId" , id)
+//                    .findFirst();
+//            alarmModel.setState("no");
+//            realm.executeTransaction(realm1 -> {
+//                realm1.insertOrUpdate(alarmModel);
+//            });
+//        }
+//        view.notificationAndAlarmOff(id);
+//    }
 }

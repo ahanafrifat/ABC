@@ -4,6 +4,7 @@ import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.interfaces.createInterface.ICreate;
 import com.appinionbd.abc.model.dataModel.APIAuth;
 import com.appinionbd.abc.model.dataModel.ResponseModel;
+import com.appinionbd.abc.model.dataModel.SignUpModel;
 import com.appinionbd.abc.networking.retrofit.ApiClient;
 
 import retrofit2.Call;
@@ -53,7 +54,13 @@ public class ApiSignUp {
     }
 
     private void gotoSignUp(String authorization, String name, String email, String password, ICreate iCreate) {
-        Call<ResponseModel> call = ApiClient.getApiInterface().signUpCall(authorization , name , email , password);
+        SignUpModel signUpModel = new SignUpModel();
+
+        signUpModel.setUserName(name);
+        signUpModel.setUserEmail(email);
+        signUpModel.setPassword(password);
+
+        Call<ResponseModel> call = ApiClient.getApiInterface().signUpCall(authorization , signUpModel);
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -62,7 +69,7 @@ public class ApiSignUp {
                     AppUtil.log("ApiSignUp", "gotoSignUp : " + response.code());
                 }
                 else {
-                    iCreate.noNewInfo("Already exist ! : " + response.code());
+                    iCreate.noNewInfo("Already exist ! : " + response.code() + " " + response.message());
                     AppUtil.log("ApiSignUp", "gotoSignUp error : " + response.code() + " Name : " + name + " email : " + email + " Password : " + password);
                 }
             }

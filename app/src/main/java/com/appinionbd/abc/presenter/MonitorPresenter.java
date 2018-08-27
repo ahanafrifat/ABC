@@ -47,7 +47,6 @@ public class MonitorPresenter implements IMonitorHome.Presenter {
 
             }
         });
-
     }
 
     @Override
@@ -57,7 +56,7 @@ public class MonitorPresenter implements IMonitorHome.Presenter {
             UserInfo userInfo = realm.where(UserInfo.class).findFirst();
             token = userInfo.getToken();
         }
-        ApiDeletePatient.getApiDeletePatient().setApiDeletePatient(token, monitorsPatientList.getUserId(), new IDeleteInterface() {
+        ApiDeletePatient.getApiDeletePatient().setApiDeletePatient(token, monitorsPatientList.getMonitorPatientRelId(), new IDeleteInterface() {
             @Override
             public void successful(String message) {
                 view.successfullyDeletedPatient(message);

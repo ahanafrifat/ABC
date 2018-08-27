@@ -37,7 +37,7 @@ public class RingtonePlayingService extends Service {
         String id = intent.getExtras().getString("id");
 
         Intent intent1 = new Intent(this.getApplicationContext() , ChoosePatientOrMonitorPresenter.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this , Integer.parseInt(id), intent1 , 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this , Integer.parseInt(id), intent1 , Integer.parseInt(id));
 
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Alarm")

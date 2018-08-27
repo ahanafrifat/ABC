@@ -58,7 +58,7 @@ public class ApiTask {
                             taskCategory.setStartDate(category.getStartDate());
                             taskCategory.setReminder(category.getReminder());
 
-                            taskCategory.setReminder(category.getReminderStatus());
+                            taskCategory.setReminderStatus(category.getReminderStatus());
 
                             taskCategory.setTaskNotes(category.getTaskNotes());
                             taskCategory.setTaskStatus(category.getTaskStatus());
@@ -68,25 +68,14 @@ public class ApiTask {
 
                             taskCategories.add(taskCategory);
 
-//                            AlarmModel alarmModel = new AlarmModel();
-//                            alarmModel.setAlarmId(category.getId());
-//                            alarmModel.setTime(category.getReminderTime() + " " + category.getStartDate());
-//
-//                            AlarmModel relamAlarmModel = realm.where(AlarmModel.class)
-//                                    .equalTo("alarmId", category.getId())
-//                                    .equalTo("state", "no")
-//                                    .or()
-//                                    .equalTo("state", "yes")
-//                                    .findFirst();
-//                            if (relamAlarmModel == null) {
-//                                alarmModel.setState("no");
-//                            } else
-//                                alarmModel.setState("yes");
-//
-//                            alarmModels.add(alarmModel);
+                            AlarmModel alarmModel = new AlarmModel();
+                            alarmModel.setAlarmId(category.getId() + "" + category.getTaskId());
+                            alarmModel.setTime(category.getStartDate() + "" +category.getReminderTime());
+                            alarmModel.setState(category.getReminderStatus());
 
                             realm.executeTransaction(realm1 -> {
                                 realm1.insertOrUpdate(taskCategory);
+                                realm1.insertOrUpdate(alarmModel);
 //                                realm1.insertOrUpdate(alarmModel);
                             });
 

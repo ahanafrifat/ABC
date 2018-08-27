@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -45,6 +47,7 @@ public class CreateTaskActivity extends AppCompatActivity implements ICreateTask
     private Calendar calendar = Calendar.getInstance();
     private CardView cardViewCreateTaskAddReminder;
     private CardView cardViewCreateTaskDate;
+    private LinearLayout linearLayoutCreateTaskDate;
     private CardView cardViewSubmit;
     private TextView textViewCreateTaskDate;
     private EditText editTextName;
@@ -74,7 +77,8 @@ public class CreateTaskActivity extends AppCompatActivity implements ICreateTask
         super.onStart();
 
         cardViewCreateTaskAddReminder = findViewById(R.id.cardView_create_task_add_reminder);
-        cardViewCreateTaskDate = findViewById(R.id.cardView_create_task_date);
+//        cardViewCreateTaskDate = findViewById(R.id.cardView_create_task_date);
+        linearLayoutCreateTaskDate = findViewById(R.id.linearLayout_create_task_date);
         cardViewSubmit = findViewById(R.id.cardView_submit);
 
         editTextName = findViewById(R.id.editText_name);
@@ -83,7 +87,9 @@ public class CreateTaskActivity extends AppCompatActivity implements ICreateTask
 
         spinnerCreateTask = findViewById(R.id.spinner_create_task);
         recyclerViewCreatedTask = findViewById(R.id.recyclerView_created_task);
-        layoutManager = new LinearLayoutManager(this);
+
+        layoutManager = new GridLayoutManager(this , 2);
+
         recyclerViewCreatedTask.setLayoutManager(layoutManager);
         recyclerViewCreatedTask.setHasFixedSize(true);
 
@@ -118,7 +124,8 @@ public class CreateTaskActivity extends AppCompatActivity implements ICreateTask
                 getTime();
             }
         };
-        cardViewCreateTaskDate.setOnClickListener(v -> updateCreateTaskDate());
+        linearLayoutCreateTaskDate.setOnClickListener(v -> updateCreateTaskDate());
+//        cardViewCreateTaskDate.setOnClickListener(v -> updateCreateTaskDate());
         cardViewCreateTaskAddReminder.setOnClickListener(v -> updateReminderTime());
 
         updateTaskStartDate();

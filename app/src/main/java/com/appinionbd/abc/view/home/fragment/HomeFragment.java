@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
+import io.realm.Realm;
 
 
 /**
@@ -181,14 +182,35 @@ public class HomeFragment extends Fragment implements IHome.View {
                     }
 
                     @Override
-                    public void setNotificationAndAlarm(String reminderTime, String id, String taskId, ImageView imageViewTime, Button buttonDone) {
+                    public void setNotificationAndAlarm(String reminderTime, String id, String taskId) {
 //                        homePresenter.checkReminder(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
-                        homePresenter.checkReminder(id , imageViewTime , buttonDone , taskId);
+//                        homePresenter.checkReminder(id , taskId);
                     }
 
                     @Override
-                    public void reminderDone(String id, ImageView imageViewTime, Button buttonDone) {
-                        homePresenter.taskDone( id , imageViewTime, buttonDone);
+                    public void reminderDone(String id, String taskId) {
+//                        homePresenter.taskDone( id );
+                        notificationAndAlarmOff( id , taskId );
+                    }
+
+                    @Override
+                    public void reminderSetOn(String id, String taskId, String time) {
+                        notificationAndAlarmON(id , taskId , time);
+                    }
+
+                    @Override
+                    public void reminderSetOff(String id, String taskId) {
+                        notificationAndAlarmOff( id , taskId );
+                    }
+
+                    @Override
+                    public void errorInUpdatingReminder(String message) {
+
+                    }
+
+                    @Override
+                    public void connectionErrorInUpdatingReminder(String message) {
+
                     }
                 });
                 recyclerViewHome.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
@@ -214,19 +236,19 @@ public class HomeFragment extends Fragment implements IHome.View {
         linearLayoutHomeEmptyContent.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone) {
+    public void notificationAndAlarmOff(String id, String taskId) {
 
-//        intentAlarm.putExtra("extra" , STATE_NO);
-//        this.getActivity().sendBroadcast(intentAlarm);
-//        alarmManager.cancel(pendingIntent);
-//
-//        imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-//        buttonDone.setVisibility(View.GONE);
+        String alarmId = id + "" + taskId;
+        intentAlarm.putExtra("extra" , STATE_NO);
+        intentAlarm.putExtra("id" , alarmId);
+        this.getActivity().sendBroadcast(intentAlarm);
+        alarmManager.cancel(pendingIntent);
+
     }
 
-    @Override
-    public void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone, String tempTime) {
+    public void notificationAndAlarmON(String id, String taskId, String time ) {
+
+        String alarmId = id + "" + taskId;
 
 //        Intent intent = new Intent(getActivity() , AlarmActivity.class);
 //        intent.putExtra("ID" , id);
@@ -234,7 +256,7 @@ public class HomeFragment extends Fragment implements IHome.View {
 //        startActivity(intent);
 
         Calendar cal = Calendar.getInstance();
-        String time = "12:07:00 08-08-2018";
+//        String time = "12:07:00 08-08-2018";
 //                "yyyy-MM-dd'T'HH:mm:ssZ"
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy", Locale.getDefault());
 
@@ -245,19 +267,16 @@ public class HomeFragment extends Fragment implements IHome.View {
             e.printStackTrace();
         }
 
-
         intentAlarm.putExtra("extra" , STATE_YES);
-        intentAlarm.putExtra("id" , id);
+        intentAlarm.putExtra("id" , alarmId);
         pendingIntent = PendingIntent.getBroadcast(this.getActivity() , Integer.parseInt(id), intentAlarm , PendingIntent.FLAG_UPDATE_CURRENT);
 
         long checkTime = cal.getTimeInMillis();
 
         alarmManager.set(AlarmManager.RTC_WAKEUP , checkTime , pendingIntent);
 
-        AppUtil.log("Check", "time in alarm = " + checkTime + " ID : " + id + "Real time : " + tempTime);
+        AppUtil.log("Check", "time in alarm = " + checkTime + " ID : " + id + "Real time : " + time);
 
-        imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-        buttonDone.setVisibility(View.VISIBLE);
 
     }
 }

@@ -12,6 +12,12 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_access_time_24dp"/>
+
         <TextView
             android:id="@+id/textView_reminder_time"
             android:layout_width="0dp"
@@ -19,12 +25,11 @@
             android:layout_weight="2"
             android:text="N/A" />
 
-        <Button
-            android:id="@+id/button_reminder_delete"
+        <ImageView
+            android:id="@+id/imageView_reminder_delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_cancel_24dp"
-            android:text="DELETE" />
+            android:src="@drawable/ic_delete_24dp"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

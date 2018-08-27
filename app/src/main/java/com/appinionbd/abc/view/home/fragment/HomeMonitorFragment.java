@@ -73,26 +73,30 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
 
     @Override
     public void showTrackList(Monitor monitor) {
-        if(monitor.getMonitorsPatientList().size() > 0) {
+        try {
+            if (monitor.getMonitorsPatientList().size() > 0) {
 
-            RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
-                @Override
-                public void selectedPatient(MonitorsPatientList monitorsPatientList) {
-                    patientSelected(monitorsPatientList);
-                }
+                RecyclerAdapterMonitor recyclerAdapterMonitor = new RecyclerAdapterMonitor(monitor.getMonitorsPatientList(), new IPatientSelection() {
+                    @Override
+                    public void selectedPatient(MonitorsPatientList monitorsPatientList) {
+                        patientSelected(monitorsPatientList);
+                    }
 
-                @Override
-                public void deletePatient(MonitorsPatientList monitorsPatientList) {
-                    monitorHomePresenter.deletePatientParmanently(monitorsPatientList);
-                }
-            });
+                    @Override
+                    public void deletePatient(MonitorsPatientList monitorsPatientList) {
+                        monitorHomePresenter.deletePatientParmanently(monitorsPatientList);
+                    }
+                });
 
-            recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
-            recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
-            recyclerAdapterMonitor.notifyDataSetChanged();
+                recyclerViewMonitor.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
+                recyclerViewMonitor.setAdapter(recyclerAdapterMonitor);
+                recyclerAdapterMonitor.notifyDataSetChanged();
+            } else
+                Toast.makeText(getActivity(), "No List !", Toast.LENGTH_LONG).show();
         }
-        else
-            Toast.makeText(getActivity() , "No List !" ,Toast.LENGTH_LONG).show();
+        catch (Exception e){
+            Toasty.error(getActivity() , "no Data" , Toast.LENGTH_LONG , true).show();
+        }
     }
 
     private void patientSelected(MonitorsPatientList monitorsPatientList) {
@@ -109,10 +113,12 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
 
     @Override
     public void successfullyDeletedPatient(String message) {
+
         Toasty.success(getActivity() , message ,Toast.LENGTH_LONG , true).show();
         Intent intent = new Intent(getActivity() , HomeActivity.class);
         intent.putExtra("patientOrMonitor" , "monitor");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
         startActivity(intent);
     }
 

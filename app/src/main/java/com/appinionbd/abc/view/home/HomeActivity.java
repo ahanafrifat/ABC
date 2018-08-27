@@ -87,6 +87,8 @@ public class HomeActivity extends AppCompatActivity
             startFragment(HOME_FRAGMENT_FOR_PATIENT);
         else if(choose.equals("monitor"))
             startFragment(HOME_FRAGMENT_FOR_Monitor);
+        else
+            startFragment(HOME_FRAGMENT_FOR_Monitor);
 
         View view = navigationView.getHeaderView(0);
         imageViewProfile = view.findViewById(R.id.imageView_profile);
@@ -156,10 +158,6 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_choose_patient_or_monitor){
             startChoosePatientOrMonitorActivity();
-        }
-
-        else if (id == R.id.nav_change_password) {
-
         }
         else if (id == R.id.nav_log_out) {
             gotoLogOut();

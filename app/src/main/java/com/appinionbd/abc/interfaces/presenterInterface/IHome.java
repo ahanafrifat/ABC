@@ -14,10 +14,10 @@ public interface IHome {
         void taskList(List<TaskCategory> taskCategories);
 
         void taskListEmpty(String message);
-
-        void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone);
-
-        void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone, String tempTime);
+//
+//        void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone);
+//
+//        void notificationAndAlarmON(String id, ImageView imageViewTime, Button buttonDone, String tempTime);
 
     }
 
@@ -27,6 +27,6 @@ public interface IHome {
 
         void checkReminder(String id, ImageView imageViewTime, Button buttonDone, String taskId);
 
-        void taskDone(String id, ImageView imageViewTime, Button buttonDone);
+//        void taskDone(String id);
     }
 }

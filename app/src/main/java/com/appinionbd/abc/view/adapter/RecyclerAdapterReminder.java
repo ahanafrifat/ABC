@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appinionbd.abc.R;
@@ -32,7 +33,7 @@ public class RecyclerAdapterReminder extends RecyclerView.Adapter<RecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
         holder.textViewReminderTime.setText(reminderList.get(position).toString());
-        holder.buttonReminderDelete.setOnClickListener(v -> deleteReminder(position));
+        holder.imageViewReminderDelete.setOnClickListener(v -> deleteReminder(position));
     }
 
     private void deleteReminder(int position) {
@@ -47,12 +48,12 @@ public class RecyclerAdapterReminder extends RecyclerView.Adapter<RecyclerAdapte
     class ReminderViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textViewReminderTime;
-        private Button buttonReminderDelete;
+        private ImageView imageViewReminderDelete;
         public ReminderViewHolder(View itemView) {
             super(itemView);
 
             textViewReminderTime = itemView.findViewById(R.id.textView_reminder_time);
-            buttonReminderDelete = itemView.findViewById(R.id.button_reminder_delete);
+            imageViewReminderDelete = itemView.findViewById(R.id.imageView_reminder_delete);
 
 //            buttonReminderDelete.setOnClickListener(v -> iReminder.deleteReminder(getLayoutPosition()));
         }

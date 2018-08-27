@@ -5,6 +5,7 @@ public class ReminderModel {
     String reminderName;
 
     public ReminderModel() {
+
     }
 
     public ReminderModel(int reminderId, String reminderName) {

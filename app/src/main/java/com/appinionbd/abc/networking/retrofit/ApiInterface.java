@@ -9,6 +9,7 @@ import com.appinionbd.abc.model.dataModel.PatientHistory;
 import com.appinionbd.abc.model.dataModel.PatientWithDate;
 import com.appinionbd.abc.model.dataModel.ResponseModel;
 import com.appinionbd.abc.model.dataModel.ResponseTask;
+import com.appinionbd.abc.model.dataModel.SignUpModel;
 import com.appinionbd.abc.model.dataModel.Task;
 import com.appinionbd.abc.model.dataModel.UpdatePersonalInfoBody;
 import com.appinionbd.abc.model.dataModel.User;
@@ -67,12 +68,10 @@ public interface ApiInterface {
     @GET("/abcApp_api/api/task/monitor_patient_list")
     Call<Monitor> trackListCall(@Header("token") String token);
 
-
+    @Headers({"Content-Type: application/json"})
     @POST("/abcApp_api/api/app_auth/signup")
     Call<ResponseModel> signUpCall(@Header("Authorization") String authorization ,
-                                   @Query("user_name") String userName ,
-                                   @Query("user_email") String email ,
-                                   @Query("password") String password);
+                                   @Body SignUpModel signUpModel);
 
 
     @Headers({"Content-Type: application/json"})
