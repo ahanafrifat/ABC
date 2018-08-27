@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.appinionbd.abc.R;
@@ -65,80 +67,159 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         holder.textViewName.setText(taskCategories.get(position).getTaskName());
         holder.textViewTime.setText(taskCategories.get(position).getReminderTime());
 
-        int state;
-
-        state = checkAlarm(taskCategories.get(position).getId() , taskCategories.get(position).getTaskId());
-
-        if (state == STATE_YES) {
-            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-            holder.buttonDone.setVisibility(View.VISIBLE);
-//            updateStatus(STATE_YES ,
-//                    taskCategories.get(position).getId(),
-//                    taskCategories.get(position).getTaskId() ,
-//                    taskCategories.get(position).getStartDate(),
-//                    taskCategories.get(position).getReminderTime());
+        if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_NO)){
+            holder.switchAlarm.setChecked(false);
         }
-        else if(state == STATE_NO) {
-            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-            holder.buttonDone.setVisibility(View.GONE);
-//            updateStatus(STATE_NO,
-//                    taskCategories.get(position).getId(),
-//                    taskCategories.get(position).getTaskId() ,
-//                    taskCategories.get(position).getStartDate(),
-//                    taskCategories.get(position).getReminderTime());
+        else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_YES)){
+            holder.switchAlarm.setChecked(true);
         }
-        else if(state == STATE_DONE) {
-            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
-            holder.buttonDone.setVisibility(View.GONE);
+        else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_DONE)){
+
+        }
+
+//        int state;
+//
+//        state = checkAlarm(taskCategories.get(position).getId() , taskCategories.get(position).getTaskId());
+
+//        if (state == STATE_YES) {
+//            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
+//            holder.buttonDone.setVisibility(View.VISIBLE);
+////            updateStatus(STATE_YES ,
+////                    taskCategories.get(position).getId(),
+////                    taskCategories.get(position).getTaskId() ,
+////                    taskCategories.get(position).getStartDate(),
+////                    taskCategories.get(position).getReminderTime());
+//        }
+//        else if(state == STATE_NO) {
+//            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
+//            holder.buttonDone.setVisibility(View.GONE);
+////            updateStatus(STATE_NO,
+////                    taskCategories.get(position).getId(),
+////                    taskCategories.get(position).getTaskId() ,
+////                    taskCategories.get(position).getStartDate(),
+////                    taskCategories.get(position).getReminderTime());
+//        }
+//        else if(state == STATE_DONE) {
+//            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
+//            holder.buttonDone.setVisibility(View.GONE);
+////            updateStatus(STATE_DONE,
+////                    taskCategories.get(position).getId(),
+////                    taskCategories.get(position).getTaskId() ,
+////                    taskCategories.get(position).getStartDate(),
+////                    taskCategories.get(position).getReminderTime());
+        }
+
+
+//        holder.imageViewTime.setOnClickListener(v -> {
+//
+//            AppUtil.log("RecyclerAdapterHome" , "Status : " + taskCategories.get(position).getReminderStatus());
+//
+//            if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_NO)) {
+//                v.setVisibility(View.GONE);
+//                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
+//                holder.buttonDone.setVisibility(View.VISIBLE);
+//                updateStatus(STATE_YES,
+//                        taskCategories.get(position).getId(),
+//                        taskCategories.get(position).getTaskId(),
+//                        taskCategories.get(position).getStartDate(),
+//                        taskCategories.get(position).getReminderTime()
+//                );
+//            }
+//            else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_YES)) {
+//                v.setVisibility(View.VISIBLE);
+//                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
+//                holder.buttonDone.setVisibility(View.GONE);
+//                updateStatus(STATE_NO,
+//                        taskCategories.get(position).getId(),
+//                        taskCategories.get(position).getTaskId(),
+//                        taskCategories.get(position).getStartDate(),
+//                        taskCategories.get(position).getReminderTime()
+//                );
+//            }
+//        }
+//        );
+//
+//        holder.buttonDone.setOnClickListener(v -> {
 //            updateStatus(STATE_DONE,
 //                    taskCategories.get(position).getId(),
 //                    taskCategories.get(position).getTaskId() ,
 //                    taskCategories.get(position).getStartDate(),
-//                    taskCategories.get(position).getReminderTime());
+//                    taskCategories.get(position).getReminderTime()
+//            );
+//            v.setVisibility(View.GONE);
+//            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
+//            holder.imageViewTime.setVisibility(View.VISIBLE);
+//        } );
+
+//    }
+
+    @Override
+    public int getItemCount() {
+        return taskCategories.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder{
+        ImageView imageViewAdd;
+        TextView textViewName;
+        TextView textViewTime;
+//        ImageView imageViewTime;
+//        Button buttonDone;
+        Switch switchAlarm;
+        LinearLayout linearLayoutPatient;
+//        boolean state;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            imageViewAdd = itemView.findViewById(R.id.imageView_add);
+            textViewName = itemView.findViewById(R.id.textView_name);
+            textViewTime = itemView.findViewById(R.id.textView_time);
+//            imageViewTime = itemView.findViewById(R.id.imageView_alarm);
+//            buttonDone = itemView.findViewById(R.id.button_done);
+            switchAlarm = itemView.findViewById(R.id.switch_alarm);
+            linearLayoutPatient = itemView.findViewById(R.id.linearLayout_patient);
+
+            switchAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        iTaskSelection.reminderSetOn( taskCategories.get(getLayoutPosition()));
+                    }
+                    else if(!isChecked){
+                        iTaskSelection.reminderSetOff( taskCategories.get(getLayoutPosition()));
+                    }
+                }
+            });
+
+//            imageViewTime.setOnClickListener(v -> iTaskSelection.setNotificationAndAlarm(
+//                    taskCategories.get(getLayoutPosition()).getReminderTime() ,
+//                    taskCategories.get(getLayoutPosition()).getId(),
+//                    taskCategories.get(getLayoutPosition()).getTaskId(),
+//                    taskCategories.get(getLayoutPosition()).getReminderStatus()
+//                    ));
+
+//            buttonDone.setOnClickListener(v -> iTaskSelection.reminderDone(taskCategories.get(getLayoutPosition()).getId() , imageViewTime , buttonDone));
+
+            linearLayoutPatient.setOnClickListener(v -> iTaskSelection.gotoTask(taskCategories.get(getLayoutPosition())));
         }
+    }
 
+    private int checkAlarm(String id, String taskId) {
+        String alarmId = id + "" + taskId;
+        int state = 0 ;
+        try(Realm realm = Realm.getDefaultInstance()){
 
-        holder.imageViewTime.setOnClickListener(v -> {
+            AlarmModel alarmModel = realm.where(AlarmModel.class)
+                    .equalTo("alarmId" , alarmId)
+                    .findFirst();
 
-            AppUtil.log("RecyclerAdapterHome" , "Status : " + taskCategories.get(position).getReminderStatus());
-
-            if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_NO)) {
-                v.setVisibility(View.GONE);
-                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-                holder.buttonDone.setVisibility(View.VISIBLE);
-                updateStatus(STATE_YES,
-                        taskCategories.get(position).getId(),
-                        taskCategories.get(position).getTaskId(),
-                        taskCategories.get(position).getStartDate(),
-                        taskCategories.get(position).getReminderTime()
-                );
-            }
-            else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_YES)) {
-                v.setVisibility(View.VISIBLE);
-                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-                holder.buttonDone.setVisibility(View.GONE);
-                updateStatus(STATE_NO,
-                        taskCategories.get(position).getId(),
-                        taskCategories.get(position).getTaskId(),
-                        taskCategories.get(position).getStartDate(),
-                        taskCategories.get(position).getReminderTime()
-                );
-            }
+            if(alarmModel.getState().equals("0"))
+                state = STATE_NO;
+            else if( alarmModel.getState().equals("1") )
+                state = STATE_YES;
+            else if( alarmModel.getState().equals("2") )
+                state = STATE_DONE;
         }
-        );
-
-        holder.buttonDone.setOnClickListener(v -> {
-            updateStatus(STATE_DONE,
-                    taskCategories.get(position).getId(),
-                    taskCategories.get(position).getTaskId() ,
-                    taskCategories.get(position).getStartDate(),
-                    taskCategories.get(position).getReminderTime()
-            );
-            v.setVisibility(View.GONE);
-            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
-            holder.imageViewTime.setVisibility(View.VISIBLE);
-        } );
-
+        return state;
     }
 
     private void updateStatus(int state, String id, String taskId, String startDate, String reminderTime) {
@@ -165,11 +246,11 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
                 }
                 else if(state == STATE_YES){
                     updateDatabase(id , taskId, state);
-                    iTaskSelection.reminderSetOn(id , taskId , reminderTime);
+//                    iTaskSelection.reminderSetOn(id , taskId , reminderTime);
                 }
                 else if(state == STATE_NO){
                     updateDatabase(id , taskId, state);
-                    iTaskSelection.reminderSetOff(id , taskId);
+//                    iTaskSelection.reminderSetOff(id , taskId);
                 }
             }
 
@@ -207,51 +288,5 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return taskCategories.size();
-    }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
-        ImageView imageViewAdd;
-        TextView textViewName;
-        TextView textViewTime;
-        ImageView imageViewTime;
-        Button buttonDone;
-        LinearLayout linearLayoutPatient;
-//        boolean state;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            imageViewAdd = itemView.findViewById(R.id.imageView_add);
-            textViewName = itemView.findViewById(R.id.textView_name);
-            textViewTime = itemView.findViewById(R.id.textView_time);
-            imageViewTime = itemView.findViewById(R.id.imageView_alarm);
-            buttonDone = itemView.findViewById(R.id.button_done);
-            linearLayoutPatient = itemView.findViewById(R.id.linearLayout_patient);
-
-//            buttonDone.setOnClickListener(v -> iTaskSelection.reminderDone(taskCategories.get(getLayoutPosition()).getId() , imageViewTime , buttonDone));
-
-            linearLayoutPatient.setOnClickListener(v -> iTaskSelection.gotoTask(taskCategories.get(getLayoutPosition())));
-        }
-    }
-
-    private int checkAlarm(String id, String taskId) {
-        String alarmId = id + "" + taskId;
-        int state = 0 ;
-        try(Realm realm = Realm.getDefaultInstance()){
-
-            AlarmModel alarmModel = realm.where(AlarmModel.class)
-                    .equalTo("alarmId" , alarmId)
-                    .findFirst();
-
-            if(alarmModel.getState().equals("0"))
-                state = STATE_NO;
-            else if( alarmModel.getState().equals("1") )
-                state = STATE_YES;
-            else if( alarmModel.getState().equals("2") )
-                state = STATE_DONE;
-        }
-        return state;
-    }
 }

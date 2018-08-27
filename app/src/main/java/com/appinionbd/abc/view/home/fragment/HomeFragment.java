@@ -18,9 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +42,6 @@ import java.util.List;
 import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
-import io.realm.Realm;
 
 
 /**
@@ -69,9 +66,9 @@ public class HomeFragment extends Fragment implements IHome.View {
     private final String STATE_YES = "yes";
     private final String STATE_NO = "no";
 
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
-    Intent intentAlarm;
+//    private AlarmManager alarmManager;
+//    private PendingIntent pendingIntent;
+//    Intent intentAlarm;
 
     IHome.Presenter homePresenter;
 
@@ -99,8 +96,8 @@ public class HomeFragment extends Fragment implements IHome.View {
 
     private void showHomeList() {
 
-        intentAlarm = new Intent(this.getActivity(), AlarmReceiver.class);
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//        intentAlarm = new Intent(this.getActivity(), AlarmReceiver.class);
+//        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         recyclerViewHome = getActivity().findViewById(R.id.recyclerView_home);
         linearLayoutHomeEmptyContent = getActivity().findViewById(R.id.linearLayout_home_empty_content);
@@ -182,25 +179,25 @@ public class HomeFragment extends Fragment implements IHome.View {
                     }
 
                     @Override
-                    public void setNotificationAndAlarm(String reminderTime, String id, String taskId) {
+                    public void setNotificationAndAlarm(String reminderTime, String id, String taskId, String reminderStatus) {
 //                        homePresenter.checkReminder(time, layoutPosition, alarmModels, imageViewTime, buttonDone);
-//                        homePresenter.checkReminder(id , taskId);
+                        homePresenter.checkReminder(reminderTime ,id , taskId , reminderStatus);
                     }
 
                     @Override
                     public void reminderDone(String id, String taskId) {
 //                        homePresenter.taskDone( id );
-                        notificationAndAlarmOff( id , taskId );
+//                        notificationAndAlarmOff( id , taskId );
                     }
 
                     @Override
-                    public void reminderSetOn(String id, String taskId, String time) {
-                        notificationAndAlarmON(id , taskId , time);
+                    public void reminderSetOn(TaskCategory taskCategory) {
+                        notificationAndAlarmON(taskCategory);
                     }
 
                     @Override
-                    public void reminderSetOff(String id, String taskId) {
-                        notificationAndAlarmOff( id , taskId );
+                    public void reminderSetOff(TaskCategory taskCategory) {
+                        notificationAndAlarmOff( taskCategory );
                     }
 
                     @Override
@@ -236,46 +233,73 @@ public class HomeFragment extends Fragment implements IHome.View {
         linearLayoutHomeEmptyContent.setVisibility(View.VISIBLE);
     }
 
-    public void notificationAndAlarmOff(String id, String taskId) {
+    public void notificationAndAlarmOff( TaskCategory taskCategory ) {
 
-        String alarmId = id + "" + taskId;
-        intentAlarm.putExtra("extra" , STATE_NO);
+//        String alarmId = id + "" + taskId;
+
+        String alarmId = taskCategory.getId() + "" + taskCategory.getTaskId();
+
+        Intent intentAlarm = new Intent(this.getActivity(), AlarmReceiver.class);
+
+        intentAlarm.putExtra("extra" , STATE_YES);
         intentAlarm.putExtra("id" , alarmId);
+        intentAlarm.putExtra("taskName" , taskCategory.getTaskName());
+        intentAlarm.putExtra("reminderTime" , taskCategory.getReminderTime());
+        intentAlarm.putExtra("taskCategory" , taskCategory.getTaskCategory());
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this.getActivity() ,
+                Integer.parseInt(alarmId),
+                intentAlarm ,
+                PendingIntent.FLAG_UPDATE_CURRENT );
+
         this.getActivity().sendBroadcast(intentAlarm);
+
         alarmManager.cancel(pendingIntent);
 
     }
 
-    public void notificationAndAlarmON(String id, String taskId, String time ) {
+    public void notificationAndAlarmON(TaskCategory taskCategory) {
 
-        String alarmId = id + "" + taskId;
+//        String alarmId = id + "" + taskId;
 
-//        Intent intent = new Intent(getActivity() , AlarmActivity.class);
-//        intent.putExtra("ID" , id);
-//        intent.putExtra("TIME" , tempTime);
-//        startActivity(intent);
+        String alarmId = taskCategory.getId() + "" + taskCategory.getTaskId();
 
-        Calendar cal = Calendar.getInstance();
-//        String time = "12:07:00 08-08-2018";
-//                "yyyy-MM-dd'T'HH:mm:ssZ"
+        Calendar cal = Calendar.getInstance(); // 12:07:00 08-08-2018
+
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy", Locale.getDefault());
 
         try {
-            cal.setTime(sdf.parse(time));
-            AppUtil.log("Check", "time = " + cal.getTimeInMillis() + " ID : " + id);
+//            cal.setTime(sdf.parse(time));
+            cal.setTime(sdf.parse(taskCategory.getReminderTime()));
+            AppUtil.log("Check", "time = " + cal.getTimeInMillis() + " ID : " + alarmId);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        Intent intentAlarm = new Intent(this.getActivity(), AlarmReceiver.class);
+
         intentAlarm.putExtra("extra" , STATE_YES);
         intentAlarm.putExtra("id" , alarmId);
-        pendingIntent = PendingIntent.getBroadcast(this.getActivity() , Integer.parseInt(id), intentAlarm , PendingIntent.FLAG_UPDATE_CURRENT);
+        intentAlarm.putExtra("taskName" , taskCategory.getTaskName());
+        intentAlarm.putExtra("reminderTime" , taskCategory.getReminderTime());
+        intentAlarm.putExtra("taskCategory" , taskCategory.getTaskCategory());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this.getActivity() ,
+                Integer.parseInt(alarmId),
+                intentAlarm ,
+                PendingIntent.FLAG_UPDATE_CURRENT );
 
         long checkTime = cal.getTimeInMillis();
 
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
         alarmManager.set(AlarmManager.RTC_WAKEUP , checkTime , pendingIntent);
 
-        AppUtil.log("Check", "time in alarm = " + checkTime + " ID : " + id + "Real time : " + time);
+        AppUtil.log("Check", "time in alarm = " + checkTime + " ID : " + alarmId + "Real time : " + time);
 
 
     }

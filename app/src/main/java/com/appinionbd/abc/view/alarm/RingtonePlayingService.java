@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
 import com.appinionbd.abc.presenter.ChoosePatientOrMonitorPresenter;
+import com.appinionbd.abc.view.alarmDone.AlarmDoneActivity;
 import com.appinionbd.abc.view.home.HomeActivity;
 
 public class RingtonePlayingService extends Service {
@@ -35,8 +36,18 @@ public class RingtonePlayingService extends Service {
 
         String state = intent.getExtras().getString("extra");
         String id = intent.getExtras().getString("id");
+        String taskName = intent.getExtras().getString("taskName");
+        String reminderTime = intent.getExtras().getString("reminderTime");
+        String taskCategory = intent.getExtras().getString("taskCategory");
 
-        Intent intent1 = new Intent(this.getApplicationContext() , ChoosePatientOrMonitorPresenter.class);
+        Intent intent1 = new Intent(this.getApplicationContext() , AlarmDoneActivity.class);
+
+        intent1.putExtra("extra", state);
+        intent1.putExtra("id" , id);
+        intent1.putExtra("taskName" , taskName);
+        intent1.putExtra("reminderTime" , reminderTime);
+        intent1.putExtra("taskCategory" , taskCategory);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this , Integer.parseInt(id), intent1 , Integer.parseInt(id));
 
         Notification notification = new Notification.Builder(this)

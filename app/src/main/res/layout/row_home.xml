@@ -4,9 +4,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="6"
     android:clickable="true"
-    android:id="@+id/linearLayout_patient">
+    android:id="@+id/linearLayout_patient"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/imageView_add"
@@ -31,20 +31,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date"/>
+
     </LinearLayout>
-    <Button
-        android:id="@+id/button_done"
-        android:layout_weight="1"
+
+    <Switch
+        android:id="@+id/switch_alarm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="done"
-        android:visibility="invisible"
-        android:clickable="false"/>
-    <ImageView
-        android:id="@+id/imageView_alarm"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_notifications_black_24dp"/>
+        android:layout_weight="1" />
+
 </LinearLayout>
