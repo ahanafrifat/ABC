@@ -122,10 +122,11 @@ public class PatientCodeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent intent = new Intent(this , HomeActivity.class);
         intent.putExtra("patientOrMonitor" , "monitor");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+        super.onBackPressed();
     }
 
     private void showDialogBox() {

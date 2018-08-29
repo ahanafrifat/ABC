@@ -11,6 +11,14 @@ public interface IHome {
         void taskList(List<TaskCategory> taskCategories);
 
         void taskListEmpty(String message);
+
+        void alarmOn(String message, TaskCategory taskCategory);
+
+        void alarmOff(String message, TaskCategory taskCategory);
+
+        void alarmStatusChangeError(String message);
+
+        void alarmStatusChangeConnectionError(String message);
 //
 //        void notificationAndAlarmOff(String id, ImageView imageViewTime, Button buttonDone);
 //
@@ -23,6 +31,10 @@ public interface IHome {
         void sendDate(String time);
 
         void checkReminder(String reminderTime, String id, String taskId, String reminderStatus);
+
+        void reminderOnAndSaveInDatabase(TaskCategory taskCategory, int alarmOn);
+
+        void reminderOffAndSaveInDatabase(TaskCategory taskCategory, int alarmOff);
 
 //        void taskDone(String id);
     }

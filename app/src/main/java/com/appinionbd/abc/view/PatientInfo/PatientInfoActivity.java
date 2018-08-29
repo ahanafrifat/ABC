@@ -71,8 +71,15 @@ public class PatientInfoActivity extends AppCompatActivity implements IPatientIn
         textViewPatientInfoEmail.setText(patientEmail);
         textViewPatientInfoDob.setText(patientDob);
         textViewPatientInfoHeight.setText(patientHeight);
-        textViewPatientInfoWeight.setText(patientWeight);
-        textViewPatientInfoGender.setText(patientGender);
+        textViewPatientInfoWeight.setText(patientWeight + " kg");
+
+        if(patientGender.equals("0")){
+            textViewPatientInfoGender.setText("Male");
+        }
+        else if(patientGender.equals("1")){
+            textViewPatientInfoGender.setText("Female");
+        }
+
 
         recyclerViewPersonalInfoList = findViewById(R.id.recyclerView_patient_task);
 

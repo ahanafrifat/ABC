@@ -34,7 +34,15 @@ public class RecyclerAdapterPatientHistoryReminder extends RecyclerView.Adapter<
         holder.textViewPatientHistoryReminderName.setText(reminderLists.get(position).getReminderId());
         holder.textViewPatientHistoryReminderTime.setText(reminderLists.get(position).getReminderTime() + " " + reminderLists.get(position).getReminderDate());
 
-        holder.textViewPatientHistoryReminderStatus.setText(reminderLists.get(position).getStatus());
+        if(reminderLists.get(position).getStatus().equals("0")){
+            holder.textViewPatientHistoryReminderStatus.setText("Not done");
+        }
+        else if(reminderLists.get(position).getStatus().equals("1")){
+            holder.textViewPatientHistoryReminderStatus.setText("Not done");
+        }
+        else if(reminderLists.get(position).getStatus().equals("2")){
+            holder.textViewPatientHistoryReminderStatus.setText("Done");
+        }
 
     }
 

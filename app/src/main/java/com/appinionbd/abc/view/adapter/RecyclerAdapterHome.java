@@ -68,90 +68,21 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         holder.textViewTime.setText(taskCategories.get(position).getReminderTime());
 
         if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_NO)){
+            holder.textViewAlarmDone.setVisibility(View.GONE);
+            holder.switchAlarm.setVisibility(View.VISIBLE);
             holder.switchAlarm.setChecked(false);
         }
         else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_YES)){
+            holder.textViewAlarmDone.setVisibility(View.GONE);
+            holder.switchAlarm.setVisibility(View.VISIBLE);
             holder.switchAlarm.setChecked(true);
         }
         else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_DONE)){
-
+            holder.textViewAlarmDone.setVisibility(View.VISIBLE);
+            holder.switchAlarm.setVisibility(View.GONE);
         }
 
-//        int state;
-//
-//        state = checkAlarm(taskCategories.get(position).getId() , taskCategories.get(position).getTaskId());
-
-//        if (state == STATE_YES) {
-//            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-//            holder.buttonDone.setVisibility(View.VISIBLE);
-////            updateStatus(STATE_YES ,
-////                    taskCategories.get(position).getId(),
-////                    taskCategories.get(position).getTaskId() ,
-////                    taskCategories.get(position).getStartDate(),
-////                    taskCategories.get(position).getReminderTime());
-//        }
-//        else if(state == STATE_NO) {
-//            holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-//            holder.buttonDone.setVisibility(View.GONE);
-////            updateStatus(STATE_NO,
-////                    taskCategories.get(position).getId(),
-////                    taskCategories.get(position).getTaskId() ,
-////                    taskCategories.get(position).getStartDate(),
-////                    taskCategories.get(position).getReminderTime());
-//        }
-//        else if(state == STATE_DONE) {
-//            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
-//            holder.buttonDone.setVisibility(View.GONE);
-////            updateStatus(STATE_DONE,
-////                    taskCategories.get(position).getId(),
-////                    taskCategories.get(position).getTaskId() ,
-////                    taskCategories.get(position).getStartDate(),
-////                    taskCategories.get(position).getReminderTime());
         }
-
-
-//        holder.imageViewTime.setOnClickListener(v -> {
-//
-//            AppUtil.log("RecyclerAdapterHome" , "Status : " + taskCategories.get(position).getReminderStatus());
-//
-//            if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_NO)) {
-//                v.setVisibility(View.GONE);
-//                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_active_24dp);
-//                holder.buttonDone.setVisibility(View.VISIBLE);
-//                updateStatus(STATE_YES,
-//                        taskCategories.get(position).getId(),
-//                        taskCategories.get(position).getTaskId(),
-//                        taskCategories.get(position).getStartDate(),
-//                        taskCategories.get(position).getReminderTime()
-//                );
-//            }
-//            else if(taskCategories.get(position).getReminderStatus().equals(STRING_STATE_YES)) {
-//                v.setVisibility(View.VISIBLE);
-//                holder.imageViewTime.setImageResource(R.drawable.ic_notifications_black_24dp);
-//                holder.buttonDone.setVisibility(View.GONE);
-//                updateStatus(STATE_NO,
-//                        taskCategories.get(position).getId(),
-//                        taskCategories.get(position).getTaskId(),
-//                        taskCategories.get(position).getStartDate(),
-//                        taskCategories.get(position).getReminderTime()
-//                );
-//            }
-//        }
-//        );
-//
-//        holder.buttonDone.setOnClickListener(v -> {
-//            updateStatus(STATE_DONE,
-//                    taskCategories.get(position).getId(),
-//                    taskCategories.get(position).getTaskId() ,
-//                    taskCategories.get(position).getStartDate(),
-//                    taskCategories.get(position).getReminderTime()
-//            );
-//            v.setVisibility(View.GONE);
-//            holder.imageViewTime.setImageResource(R.drawable.ic_done_24dp);
-//            holder.imageViewTime.setVisibility(View.VISIBLE);
-//        } );
-
-//    }
 
     @Override
     public int getItemCount() {
@@ -165,6 +96,7 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
 //        ImageView imageViewTime;
 //        Button buttonDone;
         Switch switchAlarm;
+        TextView textViewAlarmDone;
         LinearLayout linearLayoutPatient;
 //        boolean state;
 
@@ -176,6 +108,7 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
 //            imageViewTime = itemView.findViewById(R.id.imageView_alarm);
 //            buttonDone = itemView.findViewById(R.id.button_done);
             switchAlarm = itemView.findViewById(R.id.switch_alarm);
+            textViewAlarmDone = itemView.findViewById(R.id.textView_alarm_done);
             linearLayoutPatient = itemView.findViewById(R.id.linearLayout_patient);
 
             switchAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -221,72 +154,4 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         }
         return state;
     }
-
-    private void updateStatus(int state, String id, String taskId, String startDate, String reminderTime) {
-
-        String token;
-        //time = 2018-08-08 12:20:00 ; this is the format
-//        String time = startDate + " " + reminderTime;
-
-        try(Realm realm = Realm.getDefaultInstance()){
-            UserInfo userInfo = realm.where(UserInfo.class).findFirst();
-            token = userInfo.getToken();
-        }
-
-        UpdateReminderModel updateReminderModel = new UpdateReminderModel();
-        updateReminderModel.setReminderId(Integer.valueOf(id));
-        updateReminderModel.setStatus(String.valueOf(state));
-
-        ApiUpdateReminder.getApiUpdateReminder().setApiUpdateReminder(token, updateReminderModel, new IUpdateReminder() {
-            @Override
-            public void successfullyUpdated(String message) {
-                if(state == STATE_DONE){
-                    updateDatabase(id , taskId , state);
-                    iTaskSelection.reminderDone(id , taskId);
-                }
-                else if(state == STATE_YES){
-                    updateDatabase(id , taskId, state);
-//                    iTaskSelection.reminderSetOn(id , taskId , reminderTime);
-                }
-                else if(state == STATE_NO){
-                    updateDatabase(id , taskId, state);
-//                    iTaskSelection.reminderSetOff(id , taskId);
-                }
-            }
-
-            @Override
-            public void errorInUpdateReminder(String message) {
-                iTaskSelection.errorInUpdatingReminder(message);
-            }
-
-            @Override
-            public void connectionErrorInUpdateReminder(String message) {
-                iTaskSelection.connectionErrorInUpdatingReminder(message);
-            }
-        });
-    }
-
-    private void updateDatabase(String id, String taskId, int state) {
-
-        String alarmId = id + "" + taskId;
-
-        AlarmModel alarmModelSave = new AlarmModel();
-
-        try(Realm realm = Realm.getDefaultInstance()){
-
-            AlarmModel alarmModel = realm.where(AlarmModel.class)
-                    .equalTo("alarmId" , alarmId)
-                    .findFirst();
-
-            alarmModelSave.setAlarmId(alarmModel.getAlarmId());
-            alarmModelSave.setState(alarmModel.getState());
-            alarmModelSave.setTime(alarmModel.getTime());
-
-            realm.executeTransaction(realm1 -> {
-                realm1.insertOrUpdate(alarmModelSave);
-            });
-        }
-    }
-
-
 }

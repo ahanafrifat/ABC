@@ -9,6 +9,15 @@
     tools:context = ".view.alarmDone.AlarmDoneActivity">
 
     <TextView
+        android:id="@+id/textView_alarm_done_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="12 : 00 am"
+        android:textSize="32sp"
+        android:gravity="center"/>
+
+    <TextView
         android:id="@+id/textView_alarm_done_time"
         android:layout_width="match_parent"
         android:layout_height="0dp"

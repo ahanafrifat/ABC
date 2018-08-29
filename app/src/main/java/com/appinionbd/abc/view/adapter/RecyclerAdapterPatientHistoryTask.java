@@ -38,13 +38,14 @@ public class RecyclerAdapterPatientHistoryTask extends RecyclerView.Adapter<Recy
     public void onBindViewHolder(@NonNull MyPatientHistoryTaskViewHolder holder, int position) {
         holder.textViewPatientHistoryTaskName.setText(patientWiseTaskLists.get(position).getTaskName());
 
-        if(patientWiseTaskLists.get(position).getStatus().equals("1")) {
-            holder.textViewPatientHistoryTaskStatus.setText("Not Done");
-            holder.textViewPatientHistoryTaskStatus.setTextColor(Color.RED);
-        }
-        else {
+
+        if(patientWiseTaskLists.get(position).getStatus().equals("2")){
             holder.textViewPatientHistoryTaskStatus.setText("Done");
             holder.textViewPatientHistoryTaskStatus.setTextColor(Color.GREEN);
+        }
+        else {
+            holder.textViewPatientHistoryTaskStatus.setText("Not Done");
+            holder.textViewPatientHistoryTaskStatus.setTextColor(Color.RED);
         }
 
         switch (patientWiseTaskLists.get(position).getTaskCategory()) {

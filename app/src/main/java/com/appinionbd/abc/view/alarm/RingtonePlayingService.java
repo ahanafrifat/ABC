@@ -12,9 +12,8 @@ import android.support.annotation.Nullable;
 
 import com.appinionbd.abc.R;
 import com.appinionbd.abc.appUtils.AppUtil;
-import com.appinionbd.abc.presenter.ChoosePatientOrMonitorPresenter;
 import com.appinionbd.abc.view.alarmDone.AlarmDoneActivity;
-import com.appinionbd.abc.view.home.HomeActivity;
+import com.appinionbd.abc.view.choosePatientOrMonitor.ChoosePatientOrMonitorActivity;
 
 public class RingtonePlayingService extends Service {
 
@@ -34,53 +33,67 @@ public class RingtonePlayingService extends Service {
 
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        String state = intent.getExtras().getString("extra");
-        String id = intent.getExtras().getString("id");
-        String taskName = intent.getExtras().getString("taskName");
-        String reminderTime = intent.getExtras().getString("reminderTime");
-        String taskCategory = intent.getExtras().getString("taskCategory");
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Intent intent1 = new Intent(this.getApplicationContext() , AlarmDoneActivity.class);
 
+        String state = intent.getExtras().getString("extra");
+        String alarmIdString = intent.getExtras().getString("alarmId");
+        String taskName = intent.getExtras().getString("taskName");
+        String reminderTime = intent.getExtras().getString("reminderTime");
+        String taskCategory = intent.getExtras().getString("taskCategory");
+        String reminderId = intent.getExtras().getString("reminderId");
+
+        int alarmId = Integer.parseInt(alarmIdString);
+
         intent1.putExtra("extra", state);
-        intent1.putExtra("id" , id);
+        intent1.putExtra("alarmId" , alarmIdString);
         intent1.putExtra("taskName" , taskName);
         intent1.putExtra("reminderTime" , reminderTime);
         intent1.putExtra("taskCategory" , taskCategory);
+        intent1.putExtra("reminderId" , reminderId);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this , Integer.parseInt(id), intent1 , Integer.parseInt(id));
+        PendingIntent pendingIntent = PendingIntent.getActivity(this , alarmId, intent1 , 0);
 
         Notification notification = new Notification.Builder(this)
-                .setContentTitle("Alarm")
-                .setContentText("click Me !")
+                .setContentTitle(taskName)
+                .setContentText("TIme : " + reminderTime)
+                .setSmallIcon(R.drawable.ic_patient)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_patient)
                 .build();
 
+//        NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
+//                .setContentTitle("Alarm")
+//                .setContentText("click Me !")
+//                .setTicker("Alert New Message")
+//                .setSmallIcon(R.drawable.ic_patient);
 
-        AppUtil.log("RingtonePlayingService" , "State : "+ state + " ID : " + id);
 
-        if(state != null){
-            if(state.equals("yes")){
-                startId = 1;
-            }
-            else
-                startId = 0;
-        }
+//        String state = intent.getExtras().getString("extra");
 
-//        assert state != null;
-//        switch (state) {
-//            case "no":
-//                startId = 0;
-//                break;
-//            case "yes":
+//        AppUtil.log("RingtonePlayingService" , "State : "+ state + " ID : " + id);
+
+//        if(state != null){
+//            if(state.equals("yes")){
 //                startId = 1;
-//                break;
-//            default:
+//            }
+//            else
 //                startId = 0;
-//                break;
 //        }
+
+        assert state != null;
+        switch (state) {
+            case "no":
+                startId = alarmId;
+                break;
+            case "yes":
+                startId = 1;
+                break;
+            default:
+                startId = alarmId;
+                break;
+        }
 
         if(!this.inRunning && startId == 1){
             AppUtil.log("RingtonePlayingService" , "RingtonePlayingService is Running");
@@ -88,20 +101,21 @@ public class RingtonePlayingService extends Service {
             mediaPlayer = MediaPlayer.create(this , R.raw.richard_dawkins_1);
             mediaPlayer.start();
 
-            notificationManager.notify(0 , notification);
+            notificationManager.notify(1 , notification);
+//            notificationManager.notify(0 , notification);
 
             this.inRunning = true ;
-            this.startId = 0;
+            this.startId = alarmId;
         }
-        else if(!this.inRunning){
+        else if(!this.inRunning && startId == alarmId){
             AppUtil.log("RingtonePlayingService" , "if there was not sound and you want end");
             this.inRunning = false ;
-            this.startId =0;
+            this.startId =alarmId;
         }
         else if(this.inRunning && startId == 1){
             AppUtil.log("RingtonePlayingService" , "if there is sound and you want start");
             this.inRunning = true ;
-            this.startId =0;
+            this.startId =alarmId;
         }
         else{
             AppUtil.log("RingtonePlayingService" , "if there is sound and you want to end");
@@ -110,7 +124,7 @@ public class RingtonePlayingService extends Service {
             mediaPlayer.reset();
 
             this.inRunning = false ;
-            this.startId =0;
+            this.startId =alarmId;
         }
 
         AppUtil.log("RingtonePlayingService" , "In the service");
