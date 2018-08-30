@@ -120,7 +120,7 @@ public class MyInfoFragment extends Fragment implements IMyInfo.View{
         Bitmap bitmap = null;
         try {
             bitmap = AppUtil.encodeAsBitmap(id);
-            imageViewBarCode.setImageBitmap(bitmap);
+//            imageViewBarCode.setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
         }

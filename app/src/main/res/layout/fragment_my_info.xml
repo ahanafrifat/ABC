@@ -242,7 +242,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:paddingStart="20dp"
-                    android:text="QR CODE"
+
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -250,8 +250,7 @@
                     android:id="@+id/imageView_qrCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:src="@drawable/ic_android_24dp" />
+                    android:layout_weight="2" />
             </LinearLayout>
 
             <Button
