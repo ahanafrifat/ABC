@@ -88,7 +88,7 @@ public class HomePresenter  implements IHome.Presenter{
     @Override
     public void checkReminder(String reminderTime, String id, String taskId, String reminderStatus) {
 
-        String alarmId = id + "" + taskId;
+        String alarmId = id.concat(taskId);
 
         AlarmModel alarmModelSave = new AlarmModel();
 
@@ -97,8 +97,6 @@ public class HomePresenter  implements IHome.Presenter{
             AlarmModel alarmModel = realm.where(AlarmModel.class)
                     .equalTo("alarmId" , alarmId)
                     .findFirst();
-
-
 
             alarmModelSave.setAlarmId(alarmModel.getAlarmId());
             alarmModelSave.setState(alarmModel.getState());
@@ -136,16 +134,9 @@ public class HomePresenter  implements IHome.Presenter{
         int STATE_DONE = 2 ;
 
         String token;
-        //time = 2018-08-08 12:20:00 ; this is the format
-//        String time = startDate + " " + reminderTime;
-
         try(Realm realm = Realm.getDefaultInstance()){
             UserInfo userInfo = realm.where(UserInfo.class).findFirst();
             token = userInfo.getToken();
-
-            AlarmModel alarmModel = realm.where(AlarmModel.class)
-                    .equalTo("alarmId" , alarmId)
-                    .findFirst();
 
         }
 

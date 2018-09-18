@@ -111,6 +111,7 @@ public class HomeMonitorFragment extends Fragment implements IMonitorHome.View {
         startActivity(intent);
     }
 
+
     @Override
     public void successfullyDeletedPatient(String message) {
 

@@ -84,7 +84,7 @@ public class PatientCodeActivity extends AppCompatActivity {
             token = userInfo.getToken();
         }
         if(!textInputEditTextPatientCode.getText().toString().isEmpty())
-            ApiTrackPatient.getApiTrackPatient().setApiTrackPatient(textInputEditTextPatientCode.getText().toString(), token, new ITrackPatient() {
+            ApiTrackPatient.setApiTrackPatient(textInputEditTextPatientCode.getText().toString(), token, new ITrackPatient() {
                 @Override
                 public void successful() {
                     gotoHomeMonitorActivity();
@@ -171,9 +171,7 @@ public class PatientCodeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         AppUtil.log("BarcodeText" , String.valueOf(resultCode));
         if (requestCode == RC_BARCODE_CAPTURE) {
-            if (resultCode == CommonStatusCodes.SUCCESS)
-            {
-
+            if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     Toast.makeText(this, R.string.barcode_success, Toast.LENGTH_LONG).show();

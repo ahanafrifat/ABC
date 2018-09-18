@@ -35,8 +35,7 @@ import com.appinionbd.abc.view.signIn.SignInActivity;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Fragment fragment;
 
@@ -59,7 +58,7 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Realm.init(this);
         setContentView(R.layout.activity_home);
-        Realm.init(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -154,10 +153,10 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home_patient) {
-                startFragment(HOME_FRAGMENT_FOR_PATIENT);
+            startFragment(HOME_FRAGMENT_FOR_PATIENT);
         }
         else if (id == R.id.nav_track_me) {
-                startFragment(TRACK_ME);
+            startFragment(TRACK_ME);
         }
         else if (id == R.id.nav_my_info) {
             startFragment(MY_INFO);
